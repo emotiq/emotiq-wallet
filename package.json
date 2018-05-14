@@ -1,0 +1,49 @@
+{
+  "name": "emotiq-wallet",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "history": "^4.7.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-redux": "^5.0.0-alpha.9",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "redux-actions": "^2.3.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "homepage": "./",
+  "main": "public/electron-starter.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
+    "package-linux": "yarn build && build --linux",
+    "package-linux:dir": "yarn build && build --linux --dir"
+  },
+  "build": {
+    "appId": "ch.emotiq.wallet",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "extraMetadata": {
+      "main": "build/electron-starter.js"
+    },
+    "linux": {
+      "target": "tar.gz"
+    }
+  },
+  "devDependencies": {
+    "electron": "^2.0.0",
+    "electron-builder": "^20.13.3"
+  }
+}
