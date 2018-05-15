@@ -16,6 +16,6 @@ class StartScreen extends Component {
   }
 }
 
-export default connect(null, dispatch=>({
-  create: () => dispatch(navToCreate())
+export default connect(null, dispatch => ({
+  create: () => dispatch(navToCreate()),
 }))(StartScreen);
