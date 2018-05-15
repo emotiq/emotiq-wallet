@@ -1,21 +1,17 @@
 import React, {Component} from 'react';
-import './StartScreen.css';
+import './Menu.css';
 
-import {connect} from 'react-redux';
-import {navToCreate} from '../actions/navigation';
+let image = require("../img/button.png");
+console.log(image);
 
 class StartScreen extends Component {
   render() {
     return (
       <div className="StartScreen">
-        <h1>Emotiq Wallet!</h1>
-        <br/>
-        <a href="#" onClick={this.props.create}>Create</a>
+        <span>My wallet</span>
       </div>
     );
   }
 }
 
-export default connect(null, dispatch=>({
-  create: () => dispatch(navToCreate())
-}))(StartScreen);
+export default StartScreen;
