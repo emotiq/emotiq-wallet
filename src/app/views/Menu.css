@@ -10,7 +10,7 @@
 
 .Menu > .MenuItem:last-child {
     margin-top: auto;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .MenuItem {
@@ -22,10 +22,6 @@
     margin: 0;
 }
 
-.MenuItem figcaption {
-    margin-top: -9px;
-}
-
-.MenuItem img {
-    width: 50px;
+.MenuItem figure {
+    color: black;
 }
