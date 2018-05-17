@@ -1,3 +1,59 @@
 .Settings {
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.SettingsWrapper {
+    height: 100vh;
+    overflow: scroll;
+}
+
+.Setting {
+    background-color: lightgray;
+    margin: 10px;
+    padding: 10px;
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+}
+
+h2 {
+    text-align: left;
+}
+
+.PasswordSetting {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.PasswordInputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.PasswordInputs > div {
+    margin-right: 10px;
+}
+
+button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+}
+
+.ButtonWrapper {
+    position: relative;
+}
+
+.Rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }

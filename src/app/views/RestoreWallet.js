@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import './RestoreWallet.css';
-import {Mention, MentionsInput} from 'react-mentions'
 
 import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
 
+import {DICT_EN} from "../constants/dictionary";
+import RecoveryPhraseTextArea from "./recovery-phrase-textarea/RecoveryPhraseTextArea";
+
 class RestoreWallet extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      words: [{id: 1, display: 'asd'},
-        {id: 2, display: 'aer'}],
-    };
-  }
 
   render() {
     return (
@@ -26,12 +21,7 @@ class RestoreWallet extends Component {
         </div>
         <div className="RecoveryPhrase">
           <p>Recovery phrase</p>
-          <MentionsInput value={this.state.value} onChange={this.handleChange}>
-            <Mention
-              trigger=""
-              data={this.state.words}
-            />
-          </MentionsInput>
+          <RecoveryPhraseTextArea dictionary={DICT_EN}/>
         </div>
 
         <a href="#" onClick={this.props.back}>back</a>

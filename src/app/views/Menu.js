@@ -5,6 +5,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './Menu.css'
 
 class Menu extends Component {
+
   render() {
     return (
       <div className="Menu">
@@ -34,7 +35,9 @@ class MenuItem extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
+export default connect(state => ({
+  notifications: state.settings,
+}), dispatch => ({
   home: () => dispatch(navToHome()),
   node: () => dispatch(navToNode()),
   settings: () => dispatch(navToSettings()),
