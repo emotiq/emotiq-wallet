@@ -1,0 +1,27 @@
+.Menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100px;
+    height: 100vh;
+    border-right: 3px solid black;
+    float: left;
+}
+
+.Menu > .MenuItem:last-child {
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+.MenuItem {
+    padding: 10px;
+}
+
+.MenuItem figure {
+    text-align: center;
+    margin: 0;
+}
+
+.MenuItem figure {
+    color: black;
+}

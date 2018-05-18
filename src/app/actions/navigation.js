@@ -1,9 +1,23 @@
 import {push} from 'react-router-redux';
 
-import {CREATE_SCREEN_KEY} from '../constants/navigation';
+import {
+  HELP_SCREEN_KEY,
+  HOME_SCREEN_KEY,
+  NODE_SCREEN_KEY,
+  RESTORE_SCREEN_KEY,
+  SETTINGS_SCREEN_KEY
+} from '../constants/navigation';
 
-const navToCreate = () => dispatch => dispatch(push(CREATE_SCREEN_KEY));
+const navToRestore = () => dispatch => dispatch(push(RESTORE_SCREEN_KEY));
+const navToHome = () => dispatch => dispatch(push(HOME_SCREEN_KEY));
+const navToNode = () => dispatch => dispatch(push(NODE_SCREEN_KEY));
+const navToSettings = () => dispatch => dispatch(push(SETTINGS_SCREEN_KEY));
+const navToHelp = () => dispatch => dispatch(push(HELP_SCREEN_KEY));
 
 export {
-  navToCreate,
+  navToRestore,
+  navToSettings,
+  navToHelp,
+  navToHome,
+  navToNode
 };
