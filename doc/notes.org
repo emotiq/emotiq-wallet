@@ -1,0 +1,20 @@
+* Validate OpenAPI
+** Installation
+#+BEGIN_EXAMPLE
+node install js-yaml 
+node install openapi-schema-validation
+#+END_EXAMPLE
+** Convert to JSON
+
+#+BEGIN_EXAMPLE bash 
+node_modules/js-yaml/bin/js-yaml.js emotiq-wallet-openapi.yaml > schema.json
+#+END_EXAMPLE
+
+** Validate wrt. OpenAPI schema
+
+<https://www.npmjs.com/package/openapi-schema-validation>
+
+#+BEGIN_EXAMPLE
+var validateSchema = require('openapi-schema-validation').validate;
+console.log(validateSchema(require('./schema.json'), 'openapi-3.0.0');
+#+END_EXAMPLE
