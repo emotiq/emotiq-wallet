@@ -15,6 +15,9 @@
     "source-map-support": "^0.4.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/react-fontawesome": "^0.0.20",
     "electron-debug": "^0.6.0",
     "electron-json-storage": "^2.0.0",
     "electron-positioner": "^3.0.0",
@@ -28,6 +31,7 @@
     "postcss": "^5.0.19",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-mentions": "^2.0.1",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-redux": "^5.0.0-alpha.9",

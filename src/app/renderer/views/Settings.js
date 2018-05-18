@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
-import './CreateWallet.css';
-
 import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
 
-class CreateWallet extends Component {
+import {navToRestore} from '../actions/navigation';
+
+import style from './Settings.css';
+
+class Settings extends Component {
   render() {
     return (
-      <div className="CreateWallet">
-        <h1>Create new wallet</h1>
+      <div className={style.Settings}>
+        <a href="#" onClick={this.props.restore}>Restore wallet</a>
         <br/>
         <a href="#" onClick={this.props.back}>back</a>
       </div>
@@ -18,4 +20,5 @@ class CreateWallet extends Component {
 
 export default connect(null, dispatch => ({
   back: () => dispatch(goBack()),
-}))(CreateWallet);
+  restore: () => dispatch(navToRestore())
+}))(Settings);

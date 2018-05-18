@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 
 // todo: extract to store utils
 import {applyMiddleware, createStore} from 'redux';
@@ -12,11 +11,21 @@ import createHistory from 'history/createMemoryHistory';
 import {Route} from 'react-router';
 import appReducers from './reducers';
 
-import StartScreen from './views/StartScreen';
-import CreateWallet from './views/CreateWallet';
-import TestScreen from './views/TestScreen';
-import {CREATE_SCREEN_KEY, START_SCREEN_KEY} from './constants/navigation';
+import Menu from './views/Menu';
 
+import Home from './views/Home';
+import Node from './views/Node';
+import Help from './views/Help';
+import RestoreWallet from './views/RestoreWallet';
+import Settings from './views/Settings';
+import TestRealmScreen from './views/TestScreen';
+import {
+  HELP_SCREEN_KEY,
+  HOME_SCREEN_KEY,
+  NODE_SCREEN_KEY,
+  RESTORE_SCREEN_KEY,
+  SETTINGS_SCREEN_KEY,
+} from './constants/navigation';
 
 let initialState = {};
 
@@ -36,13 +45,17 @@ class Application extends Component {
   render = () =>
     <Provider store={store}>
       {/* ConnectedRouter will use the store from Provider automatically */}
-      <ConnectedRouter history={history}>
-        <div>
-          <Route exact path="/" component={TestScreen}/>
-          <Route path={START_SCREEN_KEY} component={StartScreen}/>
-          <Route path={CREATE_SCREEN_KEY} component={CreateWallet}/>
-        </div>
-      </ConnectedRouter>
+      <div>
+        <Menu/>
+        <ConnectedRouter history={history}>
+          <div>
+            <Route exact path={HOME_SCREEN_KEY} component={Home}/>
+            <Route path={NODE_SCREEN_KEY} component={Node}/>
+            <Route path={SETTINGS_SCREEN_KEY} component={Settings}/>
+            <Route path={RESTORE_SCREEN_KEY} component={RestoreWallet}/>
+            <Route path={HELP_SCREEN_KEY} component={Help}/>
+          </div>
+        </ConnectedRouter></div>
     </Provider>;
 }
 

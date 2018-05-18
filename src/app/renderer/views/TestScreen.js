@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 
-import {connect} from 'react-redux';
-import {navToCreate} from '../actions/navigation';
-
 import db from '../db';
 import {AccountSchema} from '../db/schema';
 
-class StartScreen extends Component {
+export default class TestRealmScreen extends Component {
   constructor(props) {
     super(props);
     this.accounts = db.objects(AccountSchema.name);
@@ -37,7 +34,3 @@ class StartScreen extends Component {
     </div>
   );
 }
-
-export default connect(null, dispatch => ({
-  create: () => dispatch(navToCreate()),
-}))(StartScreen);
