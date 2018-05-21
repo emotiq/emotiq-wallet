@@ -50,6 +50,7 @@ button {
 
 .ButtonWrapper {
     position: relative;
+    /*margin:10px;*/
 }
 
 .Rows {

@@ -43,14 +43,14 @@ class Settings extends Component {
 
   render() {
     return (
-      <div className="SettingsWrapper">
+      <div className={style.SettingsWrapper}>
         <h1>Settings</h1>
         <hr/>
-        <div className="Settings">
-          <div className="Setting PasswordSetting">
+        <div className={style.Settings}>
+          <div className={`${style.Setting} ${style.PasswordSetting}`}>
             <div>
               <h2>Set Wallet Password</h2>
-              <div className="PasswordInputs">
+              <div className={style.PasswordInputs}>
                 <div>
                   <p>Wallet password</p>
                   <input type="password" placeholder="Password" name="password" onChange={this.handlePasswordChange}/>
@@ -65,12 +65,12 @@ class Settings extends Component {
                 one
                 number.</p>
             </div>
-            <div className="ButtonWrapper">
+            <div className={style.ButtonWrapper}>
               <button disabled={!this.state.canSetPassword} onClick={this.props.setPassword}>Set&nbsp;password</button>
             </div>
           </div>
 
-          <div className="Setting Rows">
+          <div className={`${style.Setting} ${style.Rows}`}>
             <h2>Write down Wallet Recovery Phrase</h2>
             <p>The wallet and tokens are held securely on this device only and not on any servers. If this application
               is
@@ -78,12 +78,12 @@ class Settings extends Component {
               following screen, you will see a 24-word phrase. This is your wallet backup phrase. It can be entered in
               any
               version of Emotiq Wallet in order to restore your wallet.</p>
-            <div className="ButtonWrapper">
+            <div className={style.ButtonWrapper}>
               <button>Continue</button>
             </div>
           </div>
 
-          <div className="Setting Rows">
+          <div className={`${style.Setting} ${style.Rows}`}>
             <h2>Restore Wallet</h2>
             <p>Restoring a wallet will delete your current wallet from this device and replace it with a restored one.
               In
@@ -92,7 +92,7 @@ class Settings extends Component {
               <input type="checkbox" onChange={this.handleRestoreWalletCheck}/>
               <span>I understand that restoring a wallet will delete my current wallet from this device</span>
             </div>
-            <div className="ButtonWrapper">
+            <div className={style.ButtonWrapper}>
               <button disabled={!this.state.canRestoreWallet} onClick={this.props.restore}>Continue</button>
             </div>
           </div>

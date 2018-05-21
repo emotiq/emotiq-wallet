@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import style from './RestoreWallet.css';
 
 import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
 
 import {DICT_EN} from "../constants/dictionary";
 import RecoveryPhraseTextArea from "./recovery-phrase-textarea/RecoveryPhraseTextArea";
+
+import style from './RestoreWallet.css';
 
 class RestoreWallet extends Component {
 
