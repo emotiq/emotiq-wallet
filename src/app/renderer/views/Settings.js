@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import './Settings.css';
-
 import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
-import {navToRestore} from "../actions/navigation";
+
+import {navToRestore} from '../actions/navigation';
 import {setPassword} from "../actions/settings";
+
+import style from './Settings.css';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 

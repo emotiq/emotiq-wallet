@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './RestoreWallet.css';
+import style from './RestoreWallet.css';
 
 import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
@@ -11,15 +11,15 @@ class RestoreWallet extends Component {
 
   render() {
     return (
-      <div className="RestoreWallet">
-        <div className="Caption">
+      <div className={style.RestoreWallet}>
+        <div className={style.Caption}>
           <h1>RESTORE WALLET</h1>
         </div>
         <div>
           <p>Wallet name</p>
           <input/>
         </div>
-        <div className="RecoveryPhrase">
+        <div className={style.RecoveryPhrase}>
           <p>Recovery phrase</p>
           <RecoveryPhraseTextArea dictionary={DICT_EN}/>
         </div>

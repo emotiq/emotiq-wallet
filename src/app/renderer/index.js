@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+
 // todo: extract to store utils
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
@@ -9,25 +11,27 @@ import createHistory from 'history/createMemoryHistory';
 import {Route} from 'react-router';
 import appReducers from './reducers';
 
-import Home from './views/Home';
 import Menu from './views/Menu';
-import Node from "./views/Node";
-import Help from "./views/Help";
+
+import Home from './views/Home';
+import Node from './views/Node';
+import Help from './views/Help';
 import RestoreWallet from './views/RestoreWallet';
 import Settings from './views/Settings';
+import TestRealmScreen from './views/TestScreen';
 import {
   HELP_SCREEN_KEY,
   HOME_SCREEN_KEY,
   NODE_SCREEN_KEY,
   RESTORE_SCREEN_KEY,
-  SETTINGS_SCREEN_KEY
+  SETTINGS_SCREEN_KEY,
 } from './constants/navigation';
-
 
 let initialState = {};
 
 const history = createHistory();
 
+// TODO: electron-redux
 const store = createStore(
   appReducers,
   initialState,
@@ -45,16 +49,17 @@ class Application extends Component {
         <Menu/>
         <ConnectedRouter history={history}>
           <div>
-            {/* todo: routes */}
             <Route exact path={HOME_SCREEN_KEY} component={Home}/>
-            <Route exact path={NODE_SCREEN_KEY} component={Node}/>
-            <Route exact path={SETTINGS_SCREEN_KEY} component={Settings}/>
-            <Route exact path={RESTORE_SCREEN_KEY} component={RestoreWallet}/>
-            <Route exact path={HELP_SCREEN_KEY} component={Help}/>
+            <Route path={NODE_SCREEN_KEY} component={Node}/>
+            <Route path={SETTINGS_SCREEN_KEY} component={Settings}/>
+            <Route path={RESTORE_SCREEN_KEY} component={RestoreWallet}/>
+            <Route path={HELP_SCREEN_KEY} component={Help}/>
           </div>
-        </ConnectedRouter>
-      </div>
+        </ConnectedRouter></div>
     </Provider>;
 }
 
-export default Application;
+import registerServiceWorker from './registerServiceWorker';
+
+ReactDOM.render(<Application/>, document.getElementById('root'));
+registerServiceWorker();

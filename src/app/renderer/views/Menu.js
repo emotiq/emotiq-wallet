@@ -1,18 +1,21 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import {navToHelp, navToHome, navToNode, navToSettings} from '../actions/navigation';
-import 'font-awesome/css/font-awesome.min.css';
-import './Menu.css'
+
+import FAIcon from '@fortawesome/react-fontawesome';
+import {faHome, faSitemap, faCog, faQuestionCircle} from '@fortawesome/fontawesome-free-solid'
+
+import style from './Menu.css';
 
 class Menu extends Component {
 
   render() {
     return (
-      <div className="Menu">
-        <MenuItem name="Home" icon="fa fa-home fa-3x" onClick={this.props.home}/>
-        <MenuItem name="Node" icon="fa fa-sitemap fa-3x" onClick={this.props.node}/>
-        <MenuItem name="Settings" icon="fa fa-cog fa-3x" onClick={this.props.settings}/>
-        <MenuItem name="Help" icon="fa fa-question-circle-o fa-3x" onClick={this.props.help}/>
+      <div className={style.Menu}>
+        <MenuItem name="Home" icon={faHome} onClick={this.props.home}/>
+        <MenuItem name="Node" icon={faSitemap} onClick={this.props.node}/>
+        <MenuItem name="Settings" icon={faCog} onClick={this.props.settings}/>
+        <MenuItem name="Help" icon={faQuestionCircle} onClick={this.props.help}/>
       </div>
     );
   }
@@ -21,17 +24,17 @@ class Menu extends Component {
 class MenuItem extends Component {
   render() {
     return (
-      <div className="MenuItem">
+      <div className={style.MenuItem}>
         <a href="#" onClick={this.props.onClick}>
           <figure>
-            <i className={this.props.icon}/>
+            <FAIcon icon={this.props.icon} size='3x'/>
             <figcaption>
               {this.props.name}
             </figcaption>
           </figure>
         </a>
       </div>
-    )
+    );
   }
 }
 

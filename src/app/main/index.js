@@ -6,20 +6,23 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
-const version = require('../package').version;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+
+// todo
+// import Realm from 'realm';
+
 function createWindow() {
   // Create the browser window.
-  const title = "Emotiq Wallet (version " + version + ")";
-  mainWindow = new BrowserWindow({width: 800, height: 600, title: title});
+  mainWindow = new BrowserWindow({width: 800, height: 600, title: "Emotiq Wallet"});
+
 
   // and load the index.html of the app.
   const startUrl = process.env.ELECTRON_START_URL || url.format({
-    pathname: path.join(__dirname, '/../build/index.html'),
+    pathname: path.join(__dirname, '../renderer/assets/html/main.html'),
     protocol: 'file:',
     slashes: true,
   });
