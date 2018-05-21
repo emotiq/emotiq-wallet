@@ -2,18 +2,18 @@ import {handleActions} from 'redux-actions';
 import {SET_PASSWORD, WRITE_DOWN_RECOVERY_PHRASE} from "../constants/settings";
 
 const initialSettingsState = {
-  passwordSet: false,
-  writeDownRecoveryPhrase: false
+  passwordIsSet: false,
+  recoveryPhraseIsWrittenDown: false
 };
 
 const setPassword = (state = initialSettingsState) => ({
   ...state,
-  passwordSet: true
+  passwordIsSet: true
 });
 
 const writeDownRecoveryPhrase = (state = initialSettingsState) => ({
   ...state,
-  writeDownRecoveryPhrase: true
+  recoveryPhraseIsWrittenDown: true
 });
 
 export default handleActions({

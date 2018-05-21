@@ -23,12 +23,7 @@ h1 {
 
 h2 {
     text-align: left;
-}
-
-.PasswordSetting {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 }
 
 .PasswordInputs {
@@ -41,7 +36,7 @@ h2 {
     margin-right: 10px;
 }
 
-button {
+.RightBottomButton {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -57,4 +52,18 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+}
+
+.Columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Attention {
+    height: 20px;
+    width: 20px;
+    background-color: red;
+    border-radius: 10px;
+    margin: -5px 0 0 5px;
 }

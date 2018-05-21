@@ -15,10 +15,27 @@
 
 .MenuItem {
     padding: 10px;
+    position: relative;
 }
 
 .MenuItem figure {
     text-align: center;
     margin: 0;
     color: black;
+}
+
+.Notification {
+    position: absolute;
+    background-color: red;
+    width: 20px;
+    height: 24px;
+    border-radius: 19px;
+    right: 0;
+    top: 0;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px 5px 0 5px;
+    margin: 3px;
 }
