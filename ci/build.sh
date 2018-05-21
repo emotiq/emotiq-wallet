@@ -12,7 +12,8 @@ case $(uname -a) in
     ;;
   Darwin*)
     md5 release/${TARBALL}
-    *)
+    ;;
+  *)
     echo Only Linux and macOS are supported at this moment
     ;;
 esac
