@@ -1,0 +1,18 @@
+image: emotiq/nodejs-dev:0.1
+variables:
+  GITHUB_USER: emotiq
+  GITHUB_REPO: emotiq-wallet
+
+stages:
+  - build
+  - test
+  - release
+  - publish
+
+before_script:
+  - ci/install-deps.sh
+
+.build: &build_definition
+  stage: build
+  script:
+    - ci/build.sh
