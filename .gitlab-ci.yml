@@ -40,8 +40,12 @@ test:linux:
   <<: *test_definition
   tags:
     - linux
+  dependencies:
+    - build:linux
 
 test:macos:
   <<: *test_definition
   tags:
     - macos
+  dependencies:
+    - build:macos
