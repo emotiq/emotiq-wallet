@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import './Home.css';
+import style from './Home.css';
 
 class Home extends Component {
   render() {
     return (
-      <div className="Home">
+      <div className={style.Home}>
         <span>My wallet</span>
       </div>
     );

@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import './RestoreWallet.css';
-import {Mention, MentionsInput} from 'react-mentions'
 
 import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
+
+import {Mention, MentionsInput} from 'react-mentions'
+
+import style from './RestoreWallet.css';
 
 class RestoreWallet extends Component {
   constructor(props) {
@@ -16,15 +18,15 @@ class RestoreWallet extends Component {
 
   render() {
     return (
-      <div className="RestoreWallet">
-        <div className="Caption">
+      <div className={style.RestoreWallet}>
+        <div className={style.Caption}>
           <h1>RESTORE WALLET</h1>
         </div>
         <div>
           <p>Wallet name</p>
           <input/>
         </div>
-        <div className="RecoveryPhrase">
+        <div className={style.RecoveryPhrase}>
           <p>Recovery phrase</p>
           <MentionsInput value={this.state.value} onChange={this.handleChange}>
             <Mention
