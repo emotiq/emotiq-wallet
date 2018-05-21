@@ -21,12 +21,27 @@ before_script:
     paths:
       - release/
 
-# build:linux:
-#   <<: *build_definition
-#   tags:
-#     - linux
+.test: &test_definition
+  stage: test
+  script:
+    - ci/tests.sh
+
+build:linux:
+  <<: *build_definition
+  tags:
+    - linux
 
 build:macos:
   <<: *build_definition
+  tags:
+    - macos
+
+test:linux:
+  <<: *test_definition
+  tags:
+    - linux
+
+test:macos:
+  <<: *test_definition
   tags:
     - macos

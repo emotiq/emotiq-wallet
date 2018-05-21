@@ -5,16 +5,4 @@ TARBALL=emotiq-wallet-0.1.0.tar.gz
 yarn install
 yarn dist
 
-ls -l release/emotiq*gz
-case $(uname -a) in
-  Linux*)
-    md5sum release/${TARBALL}
-    ;;
-  Darwin*)
-    ls -la release/*
-    # md5 release/${TARBALL}
-    ;;
-  *)
-    echo Only Linux and macOS are supported at this moment
-    ;;
-esac
+ls -l release/*
