@@ -20,7 +20,7 @@ install_deps_macos()
 {
   (cd /tmp && \
     curl -L https://nodejs.org/dist/v8.11.2/node-v8.11.2-darwin-x64.tar.gz | tar xvfz - && \
-    mv node-v8.11.2-darwin-x64/{bin,include,lib,share} /usr/local
+    cp -rv node-v8.11.2-darwin-x64/{bin,include,lib,share} /usr/local
   )
   brew install yarn --without-node
 }
