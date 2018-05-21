@@ -31,6 +31,7 @@ case $(uname -s) in
       ;;
     Darwin*)
       install_deps_macos
+      ;;
     *)
       echo Only Linux and macOS are supported atm.
 esac
