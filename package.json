@@ -1,6 +1,10 @@
 {
   "name": "emotiq-wallet",
   "productName": "Emotiq Wallet",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/emotiq/emotiq-wallet.git"
+  },
   "version": "0.1.0",
   "private": true,
   "main": "dist/main/index.js",
