@@ -16,3 +16,8 @@ before_script:
   stage: build
   script:
     - ci/build.sh
+
+build:linux:
+  <<: *build_definion
+  tags:
+    - linux
