@@ -18,6 +18,6 @@ before_script:
     - ci/build.sh
 
 build:linux:
-  <<: *build_definion
+  <<: *build_definition
   tags:
     - linux
