@@ -17,7 +17,12 @@ before_script:
   script:
     - ci/build.sh
 
-build:linux:
+# build:linux:
+#   <<: *build_definition
+#   tags:
+#     - linux
+
+build:macos:
   <<: *build_definition
   tags:
-    - linux
+    - macos

@@ -16,10 +16,21 @@ install_deps_linux()
     libcrypto++-dev
 }
 
+install_deps_macos()
+{
+  (cd /tmp && \
+    curl -L https://nodejs.org/dist/v8.11.2/node-v8.11.2-darwin-x64.tar.gz | tar xvfz - && \
+    mv node-v8.11.2-darwin-x64/{bin,include,lib,share} /usr/local
+  )
+  brew install yarn --without-node
+}
+
 case $(uname -s) in
     Linux*)
       install_deps_linux
       ;;
+    Darwin*)
+      install_deps_macos
     *)
-      echo Only Linux supported atm.
+      echo Only Linux and macOS are supported atm.
 esac
