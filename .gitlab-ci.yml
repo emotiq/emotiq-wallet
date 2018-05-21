@@ -16,6 +16,10 @@ before_script:
   stage: build
   script:
     - ci/build.sh
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - release/
 
 # build:linux:
 #   <<: *build_definition

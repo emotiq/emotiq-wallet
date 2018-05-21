@@ -11,7 +11,8 @@ case $(uname -a) in
     md5sum release/${TARBALL}
     ;;
   Darwin*)
-    md5 release/${TARBALL}
+    ls -la release/*
+    # md5 release/${TARBALL}
     ;;
   *)
     echo Only Linux and macOS are supported at this moment
