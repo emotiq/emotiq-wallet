@@ -1,4 +1,4 @@
-const schemaVersion = 3;
+const schemaVersion = 4;
 
 const AccountSchema = {
   name: 'Account',
@@ -7,6 +7,8 @@ const AccountSchema = {
     {
       name: 'string',
       address: 'string',
+      isPasswordSet: 'bool',
+      isRecoveryPhraseWrittenDown: 'bool',
     },
 };
 
@@ -16,6 +18,15 @@ const migrations = [
     migration: (or, nr) => {
     },
   },
+  {
+    version: 4,
+    migration: (or, nr) => {
+      nr.objects(AccountSchema.name).forEach(a => {
+        a.isPasswordSet = false;
+        a.isRecoveryPhraseWrittenDown = false;
+      })
+    }
+  }
 ];
 
 

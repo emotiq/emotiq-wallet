@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
 
 import navigation from './navigation';
-import settings from './settings';
+import wallet from './wallet';
 
 const reducers = combineReducers({
   navigation,
-  settings,
+  wallet,
 });
 
 export default reducers;

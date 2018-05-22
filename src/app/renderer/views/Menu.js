@@ -15,7 +15,7 @@ class Menu extends Component {
         <MenuItem name="Home" icon={faHome} onClick={this.props.home}/>
         <MenuItem name="Node" icon={faSitemap} onClick={this.props.node}/>
         <MenuItem name="Settings" icon={faCog}
-                  notificationsCount={!this.props.notifications.passwordIsSet + !this.props.notifications.recoveryPhraseIsWrittenDown}
+                  notificationsCount={!!this.props.wallet.activeWallet && (!this.props.wallet.activeWallet.isPasswordSet + !this.props.wallet.activeWallet.isRecoveryPhraseWrittenDown)}
                   onClick={this.props.settings}/>
         <MenuItem name="Help" icon={faQuestionCircle} onClick={this.props.help}/>
       </div>
@@ -45,7 +45,7 @@ class MenuItem extends Component {
 }
 
 export default connect(state => ({
-  notifications: state.settings,
+  wallet: state.wallet,
 }), dispatch => ({
   home: () => dispatch(navToHome()),
   node: () => dispatch(navToNode()),

@@ -4,7 +4,7 @@ import {goBack} from 'react-router-redux';
 import cx from 'classnames';
 
 import {navToRestore} from '../actions/navigation';
-import {setPassword, writeDownRecoveryPhrase} from "../actions/settings";
+import {setPassword, writeDownRecoveryPhrase} from "../actions/wallet";
 
 import style from './Settings.css';
 
@@ -48,7 +48,7 @@ class Settings extends Component {
         <h1>Settings</h1>
         <hr/>
         <div className={style.Settings}>
-          {!this.props.settings.passwordIsSet && (
+          {!!this.props.wallet.activeWallet && !this.props.wallet.activeWallet.isPasswordSet && (
             <div className={cx(style.Setting, style.Columns)}>
               <div>
                 <h2>Set Wallet Password
@@ -77,7 +77,7 @@ class Settings extends Component {
               </div>
             </div>)}
 
-          {!this.props.settings.recoveryPhraseIsWrittenDown && (
+          {!!this.props.wallet.activeWallet && !this.props.wallet.activeWallet.isRecoveryPhraseWrittenDown && (
             <div className={cx(style.Setting, style.Rows)}>
               <h2>Write down Wallet Recovery Phrase
                 <div className={style.Attention}/>
@@ -94,7 +94,7 @@ class Settings extends Component {
               </div>
             </div>)}
 
-          {this.props.settings.passwordIsSet && (
+          {!!this.props.wallet.activeWallet && this.props.wallet.activeWallet.isPasswordSet && (
             <div className={cx(style.Setting, style.Rows)}>
               <h2>Change Wallet Password</h2>
               <div className={style.PasswordInputs}>
@@ -143,7 +143,7 @@ class Settings extends Component {
 }
 
 export default connect(state => ({
-  settings: state.settings
+  wallet: state.wallet
 }), dispatch => ({
   back: () => dispatch(goBack()),
   restore: () => dispatch(navToRestore()),
