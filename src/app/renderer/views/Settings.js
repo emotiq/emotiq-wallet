@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
-import {cx} from 'classnames';
+import cx from 'classnames';
 
 import {navToRestore} from '../actions/navigation';
 import {setPassword, writeDownRecoveryPhrase} from "../actions/settings";
