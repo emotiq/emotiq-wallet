@@ -1,9 +1,4 @@
-import {
-  DELETE_WALLET,
-  RESTORE_WALLET,
-  SET_PASSWORD,
-  WRITE_DOWN_RECOVERY_PHRASE
-} from "../constants/wallet";
+import {DELETE_WALLET, RESTORE_WALLET, SET_PASSWORD, WRITE_DOWN_RECOVERY_PHRASE} from "../constants/wallet";
 
 import db from '../db';
 import {AccountSchema} from '../db/schema';
@@ -40,7 +35,13 @@ const changePassword = (oldPass, newPass) => dispatch => {
   return Promise.resolve();
 };
 
-const writeDownRecoveryPhrase = () => ({type: WRITE_DOWN_RECOVERY_PHRASE});
+const writeDownRecoveryPhrase = () => {
+  let wallet = db.objects(AccountSchema.name)[0];
+  if (wallet !== undefined) {
+    db.write(() => wallet.isRecoveryPhraseWrittenDown = true);
+  }
+  return {type: WRITE_DOWN_RECOVERY_PHRASE}
+};
 
 const restoreWallet = (wallet) => {
   db.write(() => {
