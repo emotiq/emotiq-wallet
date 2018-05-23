@@ -13,7 +13,7 @@ function getInitialState() {
   }
   let activeWallet = {
     name: wallet.name,
-    isPasswordSet: wallet.isPasswordSet,
+    password: wallet.password,
     isRecoveryPhraseWrittenDown: wallet.isRecoveryPhraseWrittenDown,
   };
   return {
@@ -23,9 +23,9 @@ function getInitialState() {
 
 const initialWalletState = getInitialState();
 
-const setPassword = (state = initialWalletState) => {
+const setPassword = (state = initialWalletState, action) => {
   let {activeWallet} = state;
-  activeWallet && (activeWallet.isPasswordSet = true);
+  activeWallet && (activeWallet.password = action.password);
   return {
     ...state,
   }
