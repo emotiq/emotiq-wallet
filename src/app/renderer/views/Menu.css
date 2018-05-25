@@ -1,10 +1,16 @@
+:root {
+    --menu-width: 100px;
+    --menu-border-right-width: 2px;
+}
+
 .Menu {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 100px;
+    width: var(--menu-width);
     height: 100vh;
-    border-right: 3px solid black;
+    border-right: solid black;
+    border-right-width: var(--menu-border-right-width);
     float: left;
 }
 

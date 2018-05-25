@@ -1,0 +1,36 @@
+.Header {
+    height: 40px;
+    margin: 20px auto;
+}
+
+.Description {
+    height: 50px;
+}
+
+.RecoveryPhrasePanel {
+    background-color: dimgray;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.RecoveryPhraseWordWrapper {
+    margin: 5px auto;
+    text-align: right;
+    margin-right: 35%;
+    color: white;
+}
+
+.RecoveryPhraseWord {
+    width: 40%;
+}
+
+.ButtonPanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.ButtonWrapper {
+    margin: 0 15px;
+}
