@@ -21,7 +21,6 @@ import {
   HELP_SCREEN_KEY,
   HOME_SCREEN_KEY,
   NODE_SCREEN_KEY,
-  RESTORE_SCREEN_KEY,
   SETTINGS_SCREEN_KEY,
 } from './constants/navigation';
 
