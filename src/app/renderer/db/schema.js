@@ -23,7 +23,6 @@ const migrations = [
     version: 4,
     migration: (or, nr) => {
       nr.objects(AccountSchema.name).forEach(a => {
-        a.isPasswordSet = false;
         a.isRecoveryPhraseWrittenDown = false;
       })
     }
