@@ -1,12 +1,17 @@
-import {DELETE_WALLET, RESTORE_WALLET, SET_PASSWORD, WRITE_DOWN_RECOVERY_PHRASE} from "../constants/wallet";
+import {RESTORE_WALLET, SET_PASSWORD, WRITE_DOWN_RECOVERY_PHRASE} from '../constants/wallet';
 
 import db from '../db';
 import {AccountSchema} from '../db/schema';
 
 import sha256 from 'crypto-js/sha256';
 import hex from 'crypto-js/enc-hex';
+import {RECOVERY_PHRASE_LENGTH} from '../constants/config';
+import {DICT_EN} from '../constants/dictionary';
 
-const setPassword = (pass) => {
+const setPassword = (pass, confirmPass) => dispatch => {
+  if (pass !== confirmPass) {
+    return Promise.reject('Passwords do not match');
+  }
   let wallet = db.objects(AccountSchema.name)[0];
   let passwordHash = sha256(pass).toString(hex);
   if (wallet !== undefined) {
@@ -14,18 +19,20 @@ const setPassword = (pass) => {
       wallet.password = passwordHash;
     });
   }
-  return {type: SET_PASSWORD, password: passwordHash}
+  dispatch({type: SET_PASSWORD, password: passwordHash});
+  return Promise.resolve();
 };
 
-const changePassword = (oldPass, newPass) => dispatch => {
+const changePassword = (oldPass, newPass, confirmPass) => dispatch => {
+  if (newPass !== confirmPass) {
+    return Promise.reject('Passwords do not match');
+  }
   let wallet = db.objects(AccountSchema.name)[0];
   let oldPasswordHash = sha256(oldPass).toString(hex);
   let newPasswordHash = sha256(newPass).toString(hex);
   if (wallet !== undefined) {
     if (oldPasswordHash !== wallet.password) {
-      let message = 'Entered password is incorrect';
-      // alert(message);
-      return Promise.reject(message);
+      return Promise.reject('Entered password is incorrect');
     }
     db.write(() => {
       wallet.password = newPasswordHash;
@@ -35,32 +42,40 @@ const changePassword = (oldPass, newPass) => dispatch => {
   return Promise.resolve();
 };
 
-const writeDownRecoveryPhrase = () => {
+const writeDownRecoveryPhrase = (controlPhrase) => dispatch => {
   let wallet = db.objects(AccountSchema.name)[0];
   if (wallet !== undefined) {
+    if (wallet.recoveryPhrase !== controlPhrase) {
+      return Promise.reject('You have entered incorrect phrase');
+    }
     db.write(() => wallet.isRecoveryPhraseWrittenDown = true);
+    dispatch({type: WRITE_DOWN_RECOVERY_PHRASE});
   }
-  return {type: WRITE_DOWN_RECOVERY_PHRASE}
+  return Promise.resolve();
 };
 
-const restoreWallet = (wallet) => {
+const restoreWallet = (recoveryPhrase) => dispatch => {
+  if (!recoveryPhrase || recoveryPhrase.length < RECOVERY_PHRASE_LENGTH) {
+    return Promise.reject('The phrase is incorrect');
+  }
   db.write(() => {
     db.deleteAll();
   });
-  wallet.address = '123';
-  wallet.password = '';
-  wallet.isRecoveryPhraseWrittenDown = false;
-  db.write(() => {
-    db.create(AccountSchema.name, wallet);
-  });
-  return {type: RESTORE_WALLET, wallet: wallet}
-};
 
-const deleteWallet = () => {
+  let restoredWallet = {
+    name: 'My wallet',
+    address: '123',
+    isRecoveryPhraseWrittenDown: false,
+    password: '',
+    recoveryPhrase: Array.apply(null, {length: RECOVERY_PHRASE_LENGTH}).map(() => DICT_EN[Math.floor(Math.random() * DICT_EN.length)]).join(' '),
+  };
+
   db.write(() => {
-    db.deleteAll();
+    db.create(AccountSchema.name, restoredWallet);
   });
-  return {type: DELETE_WALLET}
+
+  dispatch({type: RESTORE_WALLET, wallet: restoredWallet});
+  return Promise.resolve();
 };
 
 export {
@@ -68,5 +83,4 @@ export {
   changePassword,
   writeDownRecoveryPhrase,
   restoreWallet,
-  deleteWallet,
-}
+};

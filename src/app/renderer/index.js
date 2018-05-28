@@ -16,14 +16,11 @@ import Menu from './views/Menu';
 import Home from './views/Home';
 import Node from './views/Node';
 import Help from './views/Help';
-import RestoreWallet from './views/RestoreWallet';
 import Settings from './views/Settings';
-import TestRealmScreen from './views/TestScreen';
 import {
   HELP_SCREEN_KEY,
   HOME_SCREEN_KEY,
   NODE_SCREEN_KEY,
-  RESTORE_SCREEN_KEY,
   SETTINGS_SCREEN_KEY,
 } from './constants/navigation';
 
@@ -52,7 +49,6 @@ class Application extends Component {
             <Route exact path={HOME_SCREEN_KEY} component={Home}/>
             <Route path={NODE_SCREEN_KEY} component={Node}/>
             <Route path={SETTINGS_SCREEN_KEY} component={Settings}/>
-            <Route path={RESTORE_SCREEN_KEY} component={RestoreWallet}/>
             <Route path={HELP_SCREEN_KEY} component={Help}/>
           </div>
         </ConnectedRouter></div>

@@ -1,5 +1,5 @@
 import {handleActions} from 'redux-actions';
-import {DELETE_WALLET, RESTORE_WALLET, SET_PASSWORD, WRITE_DOWN_RECOVERY_PHRASE} from "../constants/wallet";
+import {DELETE_WALLET, RESTORE_WALLET, SET_PASSWORD, WRITE_DOWN_RECOVERY_PHRASE} from '../constants/wallet';
 
 import db from '../db';
 import {AccountSchema} from '../db/schema';
@@ -9,15 +9,10 @@ function getInitialState() {
   if (wallet === undefined) {
     return {
       activeWallet: null,
-    }
+    };
   }
-  let activeWallet = {
-    name: wallet.name,
-    password: wallet.password,
-    isRecoveryPhraseWrittenDown: wallet.isRecoveryPhraseWrittenDown,
-  };
   return {
-    activeWallet: activeWallet,
+    activeWallet: JSON.parse(JSON.stringify(wallet)),
   };
 }
 
@@ -28,7 +23,7 @@ const setPassword = (state = initialWalletState, action) => {
   activeWallet && (activeWallet.password = action.password);
   return {
     ...state,
-  }
+  };
 };
 
 const writeDownRecoveryPhrase = (state = initialWalletState) => {
@@ -36,21 +31,21 @@ const writeDownRecoveryPhrase = (state = initialWalletState) => {
   activeWallet && (activeWallet.isRecoveryPhraseWrittenDown = true);
   return {
     ...state,
-  }
+  };
 };
 
 const restoreWallet = (state = initialWalletState, action) => {
   state.activeWallet = action.wallet;
   return {
     ...state,
-  }
+  };
 };
 
 const deleteWallet = (state = initialWalletState) => {
   state.activeWallet = null;
   return {
     ...state,
-  }
+  };
 };
 
 export default handleActions({

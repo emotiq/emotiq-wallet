@@ -1,0 +1,5 @@
+const RECOVERY_PHRASE_LENGTH = 24;
+
+export {
+  RECOVERY_PHRASE_LENGTH,
+}
