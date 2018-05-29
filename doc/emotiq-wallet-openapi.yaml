@@ -7,6 +7,7 @@ tags:
   - name: wallet
   - name: transaction
   - name: dictionary
+  - name: support
 paths:
 # MUST implement  
   /consensus/:
@@ -218,6 +219,24 @@ paths:
                 $ref: '#/components/schemas/transaction'
         '404':
           description: No such transaction
+  '/wallet/{name}/transaction/all':
+      get:
+        tags:
+          - wallet
+        parameters:
+          - name: name
+            in: path
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Information about all transactions for wallet
+            content:
+              application/json:
+                schema:
+                  type: array
+                    items:
+                      $ref: '#/components/schemas/transaction'
   '/wallet/{name}/address':
     post:
       tags:
@@ -292,6 +311,34 @@ paths:
                   - UNUSED
               amount:
                 type: integer
+  '/wallet/{name}/address/all':
+      get:
+        tags:
+          - wallet
+        summary: Get information about all addresses associated with a wallet
+        parameters:
+          - name: name
+            description: Name of wallet
+            in: path
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Array of addreses with information
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  status:
+                    description: Whether this address has ever been used in the blockchain
+                    type: string
+                    enum:
+                      - USED
+                      - UNUSED
+                  amount:
+                    type: number
+                    format: double
   '/wallet/{name}/address/{address}/transaction':
     post:
       tags:
@@ -387,6 +434,31 @@ paths:
               type: array
               items:
                 type: string
+  '/support':
+    post:
+      summary: Support request
+      tags:
+        - support
+      requestBody:
+        description: Request content
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+                properties:
+                  email:
+                    type: string
+                  subject:
+                    type: string
+                  problem:
+                    type: string
+                  logs:
+                    type: boolean
+                    description: does the user want to attach logs
+      responses:
+        '204':
+          description: Success
 components:
   schemas:
     consensus:
@@ -409,6 +481,15 @@ components:
         timestamp:
           type: integer
           format: int64
+        type:
+          description: EMTQ Spend transaction (for example)
+          type: string
+        block:
+          description: included in block
+          type: string
+        fee:
+          type: number
+          format: double
         inputs:
           type: array
           items:
@@ -419,7 +500,8 @@ components:
               address:
                 type: string
               amount:
-                type: integer
+                type: number
+                foramt: double
         outputs:
           type: array
           items:
@@ -430,4 +512,5 @@ components:
               address:
                 type: string
               amount:
-                type: integer
+                type: number
+                format: double
