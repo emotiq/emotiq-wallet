@@ -1,0 +1,101 @@
+rpc-json: 2.0
+paths:
+  /wallet:
+    methods:
+      'consensus':
+        multiple-reponses:
+          true
+        description:
+          Subscribe to events describing the consensus status of the node
+        response:
+          result:
+            schema:
+              $ref: '#/schemas/consensus/response'
+      'getRecoveryPhrase':
+        description:
+          The recovery phrase of the wallet
+        response:
+          result:
+            schema:
+              $ref: '#/schemas/get-recovery-phrase/response'
+      'wallet':
+        description:
+          Return information about the default wallet
+        result:
+          schema:
+            $ref: '#/schemas/wallet/response'
+schemas:
+  request:
+    type: object:
+      properties:
+        jsonrpc:
+          type: string
+        id:
+          type: integer
+        method:
+          type: string
+        params:
+          type:
+            - null
+            - object
+  response:
+    type: object:
+      properties:
+        jsonrpc:
+          type: string
+        id:
+          type: integer
+        result:
+          type:
+            - null
+            - object
+        error:
+          type:
+            - null
+            - object
+  consensus:
+    response:
+      type: object
+      properties:
+        epoch:
+          description: The number of the last sealed block (aka the current chain height)
+          type: integer
+        local-epoch:
+          description: The highest number of locally synchronized contiguous blocks
+          type: integer
+        synced:
+          description: Whether the connected node is synced with the chain
+          type: boolean
+  get-recovery-phrase:
+    response:
+      type: array
+      items:
+        type: string
+  wallet:
+    response:
+      type: object
+      properties:
+        address:
+          type: string
+        amount:
+          type: integer
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+          
