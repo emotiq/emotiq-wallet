@@ -11,7 +11,6 @@ tags:
 paths:
 # MUST implement  
   /consensus/:
-    
     get:
       summary: >-
         Returns information about current chain consensus with the connected
@@ -185,7 +184,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: object
                 properties:
                   totalTransactions:
                     type: integer
@@ -219,7 +218,7 @@ paths:
                 $ref: '#/components/schemas/transaction'
         '404':
           description: No such transaction
-  '/wallet/{name}/transaction/all':
+  '/wallet/{name}/transaction/':
       get:
         tags:
           - wallet
