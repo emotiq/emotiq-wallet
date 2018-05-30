@@ -2,15 +2,6 @@ rpc-json: 2.0
 paths:
   /wallet:
     methods:
-      'consensus':
-        multiple-reponses:
-          true
-        description:
-          Subscribe to events describing the consensus status of the node
-        response:
-          result:
-            schema:
-              $ref: '#/schemas/consensus/response'
       'recovery-phrase':
         description:
           The recovery phrase of the wallet
@@ -30,6 +21,38 @@ paths:
         result:
           schema:
             $ref: '#/schemas/transactions/response'
+      'ping':
+        description:
+          A simple request/response to determine liveness of the connection
+        result:
+          schema:
+            type: string
+            enum:
+              - pong
+      'subscribe':
+        description:
+          Subscribe to notifications for a pub/sub category
+        request:
+          params:
+            type: array
+            items:
+              type: string
+              enum:
+                - consensus
+      'unsubscribe':
+        description:
+          Unsubscribe to notifications for a pub/sub category
+        request:
+          params:
+            type: array
+            items:
+              type: string
+      'consensus':
+        description:
+          Notifications for the "consensus" subscription
+        result:
+          schema:
+            $ref: '#/schemas/wallet/consensus/notification'
 schemas:
   # JSON-RPC 2.0 request object
   request:
@@ -62,7 +85,7 @@ schemas:
           - null
           - object
   consensus:
-    response:
+    notification:
       type: object
       properties:
         epoch:
