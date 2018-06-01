@@ -1,9 +1,16 @@
-import {AccountSchema, schemaVersion, migrations} from './schema';
+import {
+  AccountSchema,
+  AddressSchema,
+  migrations,
+  schemaVersion,
+  TransactionAssetSchema,
+  TransactionSchema
+} from './schema';
 
 const Realm = window.require('realm');
 
 const schema = {
-  schema: [AccountSchema],
+  schema: [AccountSchema, AddressSchema, TransactionSchema, TransactionAssetSchema],
   schemaVersion,
   migration: function (oldRealm, newRealm) {
     migrations.forEach((ma) => {

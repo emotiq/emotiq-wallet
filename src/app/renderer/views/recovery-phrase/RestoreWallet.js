@@ -60,8 +60,8 @@ class RestoreWallet extends Component {
         </div>)}
       </div>
       <div className={style.ButtonPanel}>
-        <div className={style.ButtonWrapper} onClick={this._cancel}>
-          <button>Cancel</button>
+        <div className={style.ButtonWrapper}>
+          <button onClick={this._cancel}>Cancel</button>
         </div>
         <div className={style.ButtonWrapper}>
           <button onClick={() => this.props.restoreWallet(this.state.words.map(w => w.value).join(' '))}>Restore

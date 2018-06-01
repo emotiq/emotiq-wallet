@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {goBack} from 'react-router-redux';
 import cx from 'classnames';
 
 import {changePassword, setPassword, writeDownRecoveryPhrase} from '../actions/wallet';
@@ -22,7 +21,10 @@ class Settings extends Component {
       password: '',
       confirmPassword: '',
       oldPassword: '',
+      passwordToChange: '',
+      confirmPasswordToChange: '',
       canSetPassword: false,
+      canChangePassword: false,
       readRecoveryPhraseModalIsOpen: false,
       checkRecoveryPhraseModalIsOpen: false,
       restoreWalletModalIsOpen: false,
@@ -30,27 +32,16 @@ class Settings extends Component {
   }
 
   _handleSetPasswordChange = (event) => {
-    this.setState({[event.target.name]: event.target.value});
-    if (event.target.name === 'password') {
-      this._checkPassword(event.target.value);
-    }
+    this.setState({[event.target.name]: event.target.value}, this._checkPassword);
   };
 
   _handleChangePasswordChange = (event) => {
-    this.setState({[event.target.name]: event.target.value});
-    if (event.target.name === 'password') {
-      this._checkPassword(event.target.value, this.state.oldPassword);
-    } else if (event.target.name === 'oldPassword') {
-      this._checkPassword(this.state.password, event.target.value);
-    }
+    this.setState({[event.target.name]: event.target.value}, this._checkChangePassword);
   };
 
-  _checkPassword = (password, oldPassword) => {
-    this.setState({
-      canSetPassword: passwordRegex.test(password) &&
-      (oldPassword === undefined || oldPassword.length > 0)
-    });
-  };
+  _checkPassword = () => this.setState({canSetPassword: passwordRegex.test(this.state.password)});
+
+  _checkChangePassword = () => this.setState({canChangePassword: passwordRegex.test(this.state.passwordToChange) && this.state.oldPassword.length > 0});
 
   render = () => {
     const {restoreWalletModalIsOpen, readRecoveryPhraseModalIsOpen, checkRecoveryPhraseModalIsOpen} = this.state;
@@ -65,11 +56,11 @@ class Settings extends Component {
           <h1>Settings</h1>
         </div>
         <div className={style.Settings}>
-          {!!activeWallet && [activeWallet.password === '' && this._renderSetPassword(),
+          {!!activeWallet && [!activeWallet.password && this._renderSetPassword(),
             !activeWallet.isRecoveryPhraseWrittenDown && [this._renderWriteDownRecoveryPhrase(),
               readRecoveryPhraseModalIsOpen && this._renderModalReadRecoveryPhrase(),
               checkRecoveryPhraseModalIsOpen && this._renderModalCheckRecoveryPhrase()],
-            activeWallet.password !== '' && this._renderChangePassword()]}
+            !!activeWallet.password && this._renderChangePassword()]}
 
           {this._renderRestoreWallet()}
 
@@ -97,17 +88,14 @@ class Settings extends Component {
                    onChange={this._handleSetPasswordChange}/>
           </div>
         </div>
-        <p>Please use a password at least 8 characters long, with at least one uppercase, one lowercase letter
-          and
-          one
+        <p>Please use a password at least 8 characters long, with at least one uppercase, one lowercase letter and one
           number.</p>
       </div>
       <div className={style.ButtonWrapper}>
         <button className={style.RightBottomButton} disabled={!this.state.canSetPassword}
-                onClick={() => {
-                  this.setState({canSetPassword: false});
-                  this.props.setPassword(this.state.password, this.state.confirmPassword);
-                }}>Set&nbsp;password
+                onClick={
+                  () => this.props.setPassword(this.state.password, this.state.confirmPassword)
+                }>Set&nbsp;password
         </button>
       </div>
     </div>;
@@ -140,11 +128,11 @@ class Settings extends Component {
         </div>
         <div>
           <p>Wallet password</p>
-          <input name="password" type="password" onChange={this._handleChangePasswordChange}/>
+          <input name="passwordToChange" type="password" onChange={this._handleChangePasswordChange}/>
         </div>
         <div>
           <p>Repeat password</p>
-          <input name="confirmPassword" type="password" onChange={this._handleChangePasswordChange}/>
+          <input name="confirmPasswordToChange" type="password" onChange={this._handleChangePasswordChange}/>
         </div>
       </div>
       <div>
@@ -154,9 +142,9 @@ class Settings extends Component {
         <div className={style.ButtonWrapper}>
           <button className={style.RightBottomButton}
                   onClick={() => {
-                    this.props.changePassword(this.state.oldPassword, this.state.password, this.state.confirmPassword);
+                    this.props.changePassword(this.state.oldPassword, this.state.passwordToChange, this.state.confirmPasswordToChange);
                   }}
-                  disabled={!this.state.canSetPassword}>Change&nbsp;password
+                  disabled={!this.state.canChangePassword}>Change&nbsp;password
           </button>
         </div>
       </div>
@@ -225,7 +213,6 @@ class Settings extends Component {
 export default connect(state => ({
   wallet: state.wallet
 }), dispatch => ({
-  back: () => dispatch(goBack()),
   setPassword: (pass, confirmPass) => dispatch(setPassword(pass, confirmPass))
     .catch((mes) => alert(mes)),
   changePassword: (oldPass, newPass, confirmPass) =>

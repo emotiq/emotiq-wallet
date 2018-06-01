@@ -1,5 +1,14 @@
 import {handleActions} from 'redux-actions';
-import {DELETE_WALLET, RESTORE_WALLET, SET_PASSWORD, WRITE_DOWN_RECOVERY_PHRASE} from '../constants/wallet';
+import {
+  ADD_TRANSACTION,
+  DELETE_WALLET,
+  RENAME_WALLET,
+  RESTORE_WALLET,
+  SET_ADDRESSES,
+  SET_AMOUNT,
+  SET_PASSWORD,
+  WRITE_DOWN_RECOVERY_PHRASE
+} from '../constants/wallet';
 
 import db from '../db';
 import {AccountSchema} from '../db/schema';
@@ -11,8 +20,15 @@ function getInitialState() {
       activeWallet: null,
     };
   }
+  let activeWallet = JSON.parse(JSON.stringify(wallet));
+  activeWallet.addresses = Object.values(activeWallet.addresses);
+  activeWallet.transactions = Object.values(activeWallet.transactions);
+  activeWallet.transactions.forEach(t => {
+    t.inputs = Object.values(t.inputs);
+    t.outputs = Object.values(t.outputs);
+  });
   return {
-    activeWallet: JSON.parse(JSON.stringify(wallet)),
+    activeWallet: activeWallet,
   };
 }
 
@@ -48,9 +64,45 @@ const deleteWallet = (state = initialWalletState) => {
   };
 };
 
+const renameWallet = (state = initialWalletState, action) => {
+  let {activeWallet} = state;
+  activeWallet && (activeWallet.name = action.name);
+  return {
+    ...state
+  };
+};
+
+const setAddresses = (state = initialWalletState, action) => {
+  let {activeWallet} = state;
+  activeWallet && (activeWallet.addresses = action.addresses);
+  return {
+    ...state
+  };
+};
+
+const setAmount = (state = initialWalletState, action) => {
+  let {activeWallet} = state;
+  activeWallet && (activeWallet.amount = action.amount);
+  return {
+    ...state,
+  };
+};
+
+const addTransaction = (state = initialWalletState, action) => {
+  let {activeWallet} = state;
+  activeWallet && (activeWallet.transactions.push(action.transaction));
+  return {
+    ...state,
+  };
+};
+
 export default handleActions({
   [SET_PASSWORD]: setPassword,
   [WRITE_DOWN_RECOVERY_PHRASE]: writeDownRecoveryPhrase,
   [RESTORE_WALLET]: restoreWallet,
   [DELETE_WALLET]: deleteWallet,
+  [RENAME_WALLET]: renameWallet,
+  [SET_ADDRESSES]: setAddresses,
+  [SET_AMOUNT]: setAmount,
+  [ADD_TRANSACTION]: addTransaction,
 }, initialWalletState);

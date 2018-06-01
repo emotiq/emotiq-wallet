@@ -36,13 +36,13 @@ class ReadRecoveryPhrase extends Component {
         </div>)}
       </div>
       <div className={style.ButtonPanel}>
-        <div className={style.ButtonWrapper} onClick={() => {
-          const {onNext} = this.props;
-          if (typeof onNext === 'function') {
-            onNext();
-          }
-        }}>
-          <button>Yes, I have written it down</button>
+        <div className={style.ButtonWrapper}>
+          <button onClick={() => {
+            const {onNext} = this.props;
+            if (typeof onNext === 'function') {
+              onNext();
+            }
+          }}>Yes, I have written it down</button>
         </div>
       </div>
     </div>;
