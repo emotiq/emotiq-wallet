@@ -1,7 +1,6 @@
-
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-const {clipboard} = require('electron');
+import {clipboard} from 'electron';
 import {renameWallet, sendEMTQ, updateAddresses} from '../actions/wallet';
 import FAIcon from '@fortawesome/react-fontawesome';
 import {faArrowAltCircleRight, faChartPie, faCopy, faPencilAlt, faReply} from '@fortawesome/fontawesome-free-solid';
@@ -11,7 +10,6 @@ import _ from 'lodash';
 import {EMTQ_DIVISIBILITY, FEE} from '../constants/config';
 
 import style from './Home.css';
-
 
 const POWER_DIVISIBILITY = Math.pow(10, EMTQ_DIVISIBILITY);
 
@@ -77,13 +75,14 @@ class Home extends Component {
 
   _onKeyPressWalletName = (e) => {
     if (e.key === 'Enter') {
-      this.setState({editWalletName: false}, this._changeWalletName);
+      this._changeWalletName();
     } else if (e.key === 'Escape') {
       this.setState({editWalletName: false, walletName: this.props.wallet.activeWallet.name});
     }
   };
 
   _changeWalletName = () => {
+    this.setState({editWalletName: false});
     this.props.renameWallet(this.state.walletName)
       .catch((mes) => alert(mes));
   };
