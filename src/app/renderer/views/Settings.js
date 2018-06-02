@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import cx from 'classnames';
 
-import {changePassword, setPassword, writeDownRecoveryPhrase} from '../actions/wallet';
+import {changePassword, setPassword, writeDownRecoveryPhrase} from '../../shared/actions/wallet';
 
 import RestoreWallet from './recovery-phrase/RestoreWallet';
 import ReadRecoveryPhrase from './recovery-phrase/ReadRecoveryPhrase';

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {RECOVERY_PHRASE_LENGTH} from '../../constants/config';
+import {RECOVERY_PHRASE_LENGTH} from '../../../shared/constants/config';
 
 import style from './RecoveryPhrase.css';
 

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {RECOVERY_PHRASE_LENGTH} from '../../constants/config';
+import {RECOVERY_PHRASE_LENGTH} from '../../../shared/constants/config';
 
-import {navToHome} from '../../actions/navigation';
-import {restoreWallet} from '../../actions/wallet';
+import {navToHome} from '../../../shared/actions/navigation';
+import {getWallet} from '../../../shared/actions/wallet';
 
 import style from './RecoveryPhrase.css';
 
@@ -74,7 +74,7 @@ class RestoreWallet extends Component {
 
 export default connect(null, dispatch => ({
   restoreWallet: (recoveryPhrase) =>
-    dispatch(restoreWallet(recoveryPhrase))
+    dispatch(getWallet(recoveryPhrase))
       .then(() => dispatch(navToHome()))
       .catch((mes) => alert(mes)),
 }))(RestoreWallet);

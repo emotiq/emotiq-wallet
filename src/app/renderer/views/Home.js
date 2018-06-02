@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {clipboard} from 'electron';
-import {renameWallet, sendEMTQ, updateAddresses} from '../actions/wallet';
+import {getWallet, renameWallet, sendEMTQ} from '../../shared/actions/wallet';
 import FAIcon from '@fortawesome/react-fontawesome';
 import {faArrowAltCircleRight, faChartPie, faCopy, faPencilAlt, faReply} from '@fortawesome/fontawesome-free-solid';
 import cx from 'classnames';
 import QRCode from 'qrcode.react';
 import _ from 'lodash';
-import {EMTQ_DIVISIBILITY, FEE} from '../constants/config';
+import {EMTQ_DIVISIBILITY, FEE} from '../../shared/constants/config';
 
 import style from './Home.css';
 
@@ -18,10 +18,11 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    this.props.updateAddresses();
+    this.props.getWallet();
 
+    let {activeWallet} = this.props.wallet;
     this.state = {
-      walletName: this.props.wallet.activeWallet.name,
+      walletName: activeWallet && activeWallet.name || '',
       editWalletName: false,
       activeTab: 'transactions',
       sendAddress: '',
@@ -34,13 +35,16 @@ class Home extends Component {
   }
 
   _getGroupedOrderedTransactions = (transactions) => {
+    if (!transactions) {
+      return [];
+    }
     let today = new Date();
     let yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     transactions = transactions.sort((a, b) => b.timestamp - a.timestamp);
     let grouped = _.groupBy(transactions, (t) => {
       let date = new Date();
-      date.setTime(t.timestamp);
+      date.setTime(t.timestamp * 1000);
       return date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate() ? 'Today' :
         date.getFullYear() === yesterday.getFullYear() && date.getMonth() === yesterday.getMonth() && date.getDate() === yesterday.getDate() ? 'Yesterday' :
           (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
@@ -61,7 +65,9 @@ class Home extends Component {
   _getFees = () => Math.ceil(this.state.sendAmount * POWER_DIVISIBILITY * FEE) / POWER_DIVISIBILITY;
 
   _getUnusedAddress = () => {
-    return this.props.wallet.activeWallet.addresses.find(a => !a.used).address;
+    const {activeWallet} = this.props.wallet;
+    let unusedAddress = !!activeWallet && activeWallet.addresses.find(a => !a.used);
+    return unusedAddress ? unusedAddress.address : '';
   };
 
   _sendEMTQ = () => {
@@ -89,7 +95,7 @@ class Home extends Component {
 
   _getTransactionTime = (timestamp) => {
     let date = new Date();
-    date.setTime(timestamp);
+    date.setTime(timestamp * 1000);
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
@@ -100,13 +106,17 @@ class Home extends Component {
 
   _getTransactionDateTime = (timestamp) => {
     let date = new Date();
-    date.setTime(timestamp);
+    date.setTime(timestamp * 1000);
     let day = date.getDate();
     let month = date.toLocaleString('en-us', {month: 'long'});
     return month + ' ' +
       (day < 10 ? '0' : '') + day + ', ' +
       date.getFullYear() + ' ' +
-      this._getTransactionTime(timestamp);
+      this._getTransactionTime(timestamp * 1000);
+  };
+
+  _getTransactionAmount = (tran) => {
+    return tran.inputs.reduce((a, c) => a + c.amount, 0);
   };
 
   render = () => {
@@ -184,7 +194,7 @@ class Home extends Component {
         <div className={style.TransactionsHeader}>
           <h2>{activeWallet.name}</h2>
           <p>{this._getWalletAmount()} EMTQ</p>
-          <p>Number of transactions: {activeWallet.transactions.length}</p>
+          <p>Number of transactions: {!!activeWallet.transactions ? activeWallet.transactions.length : 0}</p>
         </div>
         {Object.keys(transactions).map((key) => {
           return (
@@ -204,10 +214,10 @@ class Home extends Component {
                         <span>{tran.direction === 'IN' ? 'Receive' : 'Sent'}</span>
                       </div>
                       <div
-                        className={style.TransactionAmount}>{(tran.amount / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ
+                        className={style.TransactionAmount}>{(this._getTransactionAmount(tran) / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ
                       </div>
                       <div className={style.AlignRight}>
-                        <p>{tran.type}</p>
+                        <p>EMTQ {tran.type} transaction</p>
                         <p>{this._getTransactionTime(tran.timestamp)}</p>
                       </div>
                     </div>
@@ -229,7 +239,7 @@ class Home extends Component {
           event.stopPropagation();
         }}>
           <h1>Transaction Details</h1>
-          <p><span className={style.TransactionDetail}>Transaction type: </span>{tran.type}</p>
+          <p><span className={style.TransactionDetail}>Transaction type: </span>EMTQ {tran.type} transaction</p>
 
           <div className={style.TransactionDetailRow}>
             <div className={style.TransactionDetail}>Transaction&nbsp;ID:</div>
@@ -419,7 +429,7 @@ export default connect(state => ({
   wallet: state.wallet
 }), dispatch => ({
   renameWallet: (name) => dispatch(renameWallet(name)),
-  updateAddresses: () => dispatch(updateAddresses()),
+  getWallet: () => dispatch(getWallet()),
   sendEMTQ: (address, amount) => dispatch(sendEMTQ(address, amount))
     .catch((mes) => alert(mes)),
 }))(Home);

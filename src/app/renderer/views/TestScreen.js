@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
-import db from '../db';
-import {AccountSchema} from '../db/schema';
+import db from '../../shared/db';
+import {AccountSchema} from '../../shared/db/schema';
 
 export default class TestRealmScreen extends Component {
   constructor(props) {

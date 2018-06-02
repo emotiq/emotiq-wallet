@@ -1,23 +1,30 @@
+import configureStore from '../shared/store/configureStore';
+
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
+const spawn = require('child_process').spawn;
 const path = require('path');
 const url = require('url');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let lispProcess;
 
 
 // todo
 // import Realm from 'realm';
 
 function createWindow() {
+
+  configureStore(global.state, 'main');
+
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600, title: "Emotiq Wallet"});
+  mainWindow = new BrowserWindow({width: 800, height: 600, title: 'Emotiq Wallet'});
 
 
   // and load the index.html of the app.
@@ -40,10 +47,29 @@ function createWindow() {
   });
 }
 
+function load() {
+  // Spawn Lisp executable
+  lispProcess = spawn(path.resolve(__dirname, 'lisp/emotiq'), [], {cwd: __dirname});
+  // Create window
+  setTimeout(function () {
+    createWindow();
+  }, 500);
+}
+
+function quit() {
+  if (lispProcess !== null) {
+    lispProcess.kill('SIGKILL');
+    lispProcess = null;
+  }
+  app.exit(0);
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', load);
+
+app.on('quit', quit);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
