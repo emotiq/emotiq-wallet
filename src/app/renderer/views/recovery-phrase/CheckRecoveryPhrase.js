@@ -43,21 +43,21 @@ class CheckRecoveryPhrase extends Component {
         </div>)}
       </div>
       <div className={style.ButtonPanel}>
-        <div className={style.ButtonWrapper} onClick={() => {
-          const {onBack} = this.props;
-          if (typeof onBack === 'function') {
-            onBack();
-          }
-        }}>
-          <button>Back</button>
+        <div className={style.ButtonWrapper}>
+          <button onClick={() => {
+            const {onBack} = this.props;
+            if (typeof onBack === 'function') {
+              onBack();
+            }
+          }}>Back</button>
         </div>
-        <div className={style.ButtonWrapper} onClick={() => {
-          const {onNext} = this.props;
-          if (typeof onNext === 'function') {
-            onNext(this.state.words.map(w => w.value).join(' '));
-          }
-        }}>
-          <button>Done</button>
+        <div className={style.ButtonWrapper}>
+          <button onClick={() => {
+            const {onNext} = this.props;
+            if (typeof onNext === 'function') {
+              onNext(this.state.words.map(w => w.value).join(' '));
+            }
+          }}>Done</button>
         </div>
       </div>
     </div>;

@@ -30,6 +30,10 @@
     color: black;
 }
 
+.MenuItem > a {
+    text-decoration: none;
+}
+
 .Notification {
     position: absolute;
     background-color: red;

@@ -1,4 +1,4 @@
-const schemaVersion = 6;
+const schemaVersion = 7;
 
 const AccountSchema = {
   name: 'Account',
@@ -7,10 +7,49 @@ const AccountSchema = {
     {
       name: 'string',
       address: 'string',
-      password: 'string',
+      amount: 'int',
+      password: 'string?',
       isRecoveryPhraseWrittenDown: 'bool',
       recoveryPhrase: 'string',
+      transactions: 'Transaction[]',
+      addresses: 'Address[]',
     },
+};
+
+const TransactionSchema = {
+  name: 'Transaction',
+  primaryKey: 'id',
+  properties:
+    {
+      id: 'string',
+      timestamp: 'int',
+      direction: 'string',
+      amount: 'int',
+      block: 'string',
+      fee: 'int',
+      type: 'string',
+      inputs: 'TransactionAsset[]',
+      outputs: 'TransactionAsset[]',
+    }
+};
+
+const TransactionAssetSchema = {
+  name: 'TransactionAsset',
+  properties:
+    {
+      address: 'string',
+      amount: 'int',
+    }
+};
+
+const AddressSchema = {
+  name: 'Address',
+  primaryKey: 'address',
+  properties:
+    {
+      address: 'string',
+      used: 'bool'
+    }
 };
 
 const migrations = [
@@ -24,7 +63,7 @@ const migrations = [
     migration: (or, nr) => {
       nr.objects(AccountSchema.name).forEach(a => {
         a.isRecoveryPhraseWrittenDown = false;
-      })
+      });
     }
   },
   {
@@ -32,7 +71,7 @@ const migrations = [
     migration: (or, nr) => {
       nr.objects(AccountSchema.name).forEach(a => {
         a.password = '';
-      })
+      });
     }
   },
   {
@@ -40,7 +79,18 @@ const migrations = [
     migration: (or, nr) => {
       nr.objects(AccountSchema.name).forEach(a => {
         a.recoveryPhrase = '';
-      })
+      });
+    }
+  },
+  {
+    version: 7,
+    migration: (or, nr) => {
+      nr.objects(AccountSchema.name).forEach(a => {
+        a.amount = 200;
+        a.transactions = [];
+        a.addresses = [];
+
+      });
     }
   }
 ];
@@ -50,6 +100,9 @@ export {
   schemaVersion,
 
   AccountSchema,
+  TransactionSchema,
+  TransactionAssetSchema,
+  AddressSchema,
 
   migrations,
 };
