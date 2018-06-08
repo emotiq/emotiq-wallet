@@ -64,7 +64,7 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps && cd src/app/ && yarn",
     "hot-server": "node -r babel-register server.js",
-    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors && cp src/app/package.json dist/",
+    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors && cp src/app/package.json dist/ && cp src/app/main/emotiq dist/main/",
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors && cp -R src/app/renderer/assets dist/renderer",
     "build": "yarn build-main && yarn build-renderer",
     "start": "cross-env NODE_ENV=production electron ./",
@@ -77,7 +77,7 @@
     "appId": "ch.emotiq.wallet",
     "productName": "Emotiq Wallet",
     "compression": "normal",
-    "asar": true,
+    "asar": false,//todo asarUnpack
     "linux": {
       "target": "tar.gz"
     },
