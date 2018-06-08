@@ -6,11 +6,10 @@ import getRootReducer from '../reducers';
 
 /**
  * @param  {Object} initialState
- * @param  {String} [scope='main|renderer']
  * @param  {Object} history
  * @return {Object} store
  */
-export default function configureStore(initialState, scope = 'main', history) {
+export default function configureStore(initialState, history) {
 
   const router = routerMiddleware(history);
 
@@ -18,27 +17,17 @@ export default function configureStore(initialState, scope = 'main', history) {
     thunk,
   ];
 
-  if (scope === 'renderer') {
-    middleware = [
-      forwardToMain,
-      router,
-      ...middleware,
-    ];
-  }
-
-  if (scope === 'main') {
-    middleware = [
-      triggerAlias,
-      ...middleware,
-      forwardToRenderer,
-    ];
-  }
+  middleware = [
+    forwardToMain,
+    router,
+    ...middleware,
+  ];
 
   const enhanced = [
     applyMiddleware(...middleware),
   ];
 
-  const rootReducer = getRootReducer(scope);
+  const rootReducer = getRootReducer();
   const enhancer = compose(...enhanced);
   const store = createStore(rootReducer, initialState, enhancer);
 
@@ -48,11 +37,7 @@ export default function configureStore(initialState, scope = 'main', history) {
     });
   }
 
-  if (scope === 'main') {
-    replayActionMain(store);
-  } else {
-    replayActionRenderer(store);
-  }
+  replayActionRenderer(store);
 
   return store;
 }

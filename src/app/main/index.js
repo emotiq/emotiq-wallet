@@ -1,4 +1,4 @@
-import configureStore from '../shared/store/configureStore';
+import configureMainStore from '../shared/store/configureMainStore';
 
 const electron = require('electron');
 // Module to control application life.
@@ -20,8 +20,6 @@ let lispProcess;
 // import Realm from 'realm';
 
 function createWindow() {
-
-  configureStore(global.state, 'main');
 
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600, title: 'Emotiq Wallet'});
@@ -53,6 +51,7 @@ function load() {
   // Create window
   setTimeout(function () {
     createWindow();
+    configureMainStore(global.state);
   }, 500);
 }
 

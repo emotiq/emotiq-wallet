@@ -8,7 +8,7 @@ import {
   TransactionSchema
 } from './schema';
 
-import 'realm';
+const Realm = window.require('realm');
 
 const schema = {
   schema: [AccountSchema, AddressSchema, SettingsSchema, TransactionSchema, TransactionAssetSchema],
