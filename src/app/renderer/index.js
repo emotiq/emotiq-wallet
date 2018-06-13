@@ -11,7 +11,7 @@ let initialState = {};
 
 const history = createHistory();
 
-const store = configureRendererStore(initialState, 'renderer', history);
+const store = configureRendererStore(initialState, history);
 
 class Application extends Component {
   render = () =>

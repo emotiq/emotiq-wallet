@@ -14,13 +14,9 @@ export default function configureStore(initialState, history) {
   const router = routerMiddleware(history);
 
   let middleware = [
-    thunk,
-  ];
-
-  middleware = [
     forwardToMain,
     router,
-    ...middleware,
+    thunk,
   ];
 
   const enhanced = [

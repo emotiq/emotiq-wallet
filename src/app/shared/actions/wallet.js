@@ -1,17 +1,15 @@
 import {
   ADD_TRANSACTION,
   RENAME_WALLET,
-  RESTORE_WALLET,
   SET_AMOUNT,
   SET_PASSWORD,
   SET_WALLET,
   WRITE_DOWN_RECOVERY_PHRASE
 } from '../constants/wallet';
 import {RECOVERY_PHRASE_LENGTH} from '../constants/config';
-import {DICT_EN} from '../constants/dictionary';
 
-import db from '../db/index';
-import {AccountSchema} from '../db/schema';
+import db from '../../renderer/db/index';
+import {AccountSchema} from '../../renderer/db/schema';
 import * as ws from '../ws/client';
 
 import sha256 from 'crypto-js/sha256';
@@ -90,6 +88,7 @@ const getWallet = () => dispatch => {
         });
       let checkTimer = setInterval(() => {
         if (!!wallet.transactions && !!wallet.addresses && !!wallet.recoveryPhrase) {
+          wallet.amount += 200;
           db.write(() => {
             db.create(AccountSchema.name, wallet, true);
           });
@@ -110,21 +109,16 @@ const restoreWallet = (recoveryPhrase) => dispatch => {
   db.write(() => {
     db.delete(db.objects(AccountSchema.name));
   });
-
-  let restoredWallet = {
-    name: 'My wallet',
-    address: '0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be',
-    isRecoveryPhraseWrittenDown: false,
-    amount: 200,
-    transactions: [],
-    recoveryPhrase: Array.apply(null, {length: RECOVERY_PHRASE_LENGTH}).map(() => DICT_EN[Math.floor(Math.random() * DICT_EN.length)]).join(' '),
-  };
-
-  db.write(() => {
-    db.create(AccountSchema.name, restoredWallet);
+  let res, rej;
+  let promise = new Promise((resolve, reject) => {
+    res = resolve;
+    rej = reject;
   });
-  dispatch({type: RESTORE_WALLET, payload: restoredWallet});
-  return Promise.resolve();
+  dispatch(getWallet())
+    .then((data) => res(data))
+    .catch((e) => rej(e));
+
+  return promise;
 };
 
 const renameWallet = (name) => dispatch => {
@@ -152,7 +146,7 @@ const sendEMTQ = (address, amount) => dispatch => {
   if (wallet !== undefined) {
     let transaction = {
       id: Array.apply(null, {length: 130}).map(() => symbols[Math.floor(Math.random() * symbols.length)]).join(''),
-      timestamp: Date.now(),
+      timestamp: Date.now() / 1000,
       direction: 'OUT',
       amount: +amount,
       block: '0000000000000xf58a0xf523119cda01d2a5561c689968ec5a219096158a',
@@ -178,6 +172,7 @@ export {
   changePassword,
   writeDownRecoveryPhrase,
   getWallet,
+  restoreWallet,
   renameWallet,
   sendEMTQ,
 };

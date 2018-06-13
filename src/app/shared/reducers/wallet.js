@@ -12,8 +12,8 @@ import {
   WRITE_DOWN_RECOVERY_PHRASE
 } from '../constants/wallet';
 
-import db from '../db/index';
-import {AccountSchema} from '../db/schema';
+import db from '../../renderer/db/index';
+import {AccountSchema} from '../../renderer/db/schema';
 
 function getInitialState() {
   let wallet = db.objects(AccountSchema.name)[0];

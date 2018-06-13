@@ -47,7 +47,7 @@ function createWindow() {
 
 function load() {
   // Spawn Lisp executable
-  lispProcess = spawn(path.resolve(__dirname, 'lisp/emotiq'), [], {cwd: __dirname});
+  lispProcess = spawn(path.resolve(__dirname, '../../../emotiq'));
   // Create window
   setTimeout(function () {
     createWindow();
