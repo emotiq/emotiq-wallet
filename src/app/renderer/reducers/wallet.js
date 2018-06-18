@@ -14,6 +14,7 @@ import {
 
 import db from '../db/index';
 import {AccountSchema} from '../db/schema';
+import {STAKE, UNSTAKE} from '../../shared/constants/node';
 
 function getInitialState() {
   let wallet = db.objects(AccountSchema.name)[0];
@@ -97,6 +98,22 @@ const setAmount = (state = initialWalletState, action) => {
   };
 };
 
+const stake = (state = initialWalletState, action) => {
+  let {activeWallet} = state;
+  activeWallet && (activeWallet.amount -= action.payload);
+  return {
+    ...state,
+  };
+};
+
+const unstake = (state = initialWalletState, action) => {
+  let {activeWallet} = state;
+  activeWallet && (activeWallet.amount += action.payload);
+  return {
+    ...state,
+  };
+};
+
 const setTransactions = (state = initialWalletState, action) => {
   let {activeWallet} = state;
   activeWallet && (activeWallet.transactions = action.payload.transactions);
@@ -124,4 +141,6 @@ export default handleActions({
   [SET_AMOUNT]: setAmount,
   [ADD_TRANSACTION]: addTransaction,
   [SET_TRANSACTIONS]: setTransactions,
+  [STAKE]: stake,
+  [UNSTAKE]: unstake,
 }, initialWalletState);
