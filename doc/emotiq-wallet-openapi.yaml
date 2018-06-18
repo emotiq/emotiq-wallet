@@ -1,7 +1,8 @@
 openapi:  3.0.1
+$id:   "http://api.emotiq.ch/wallet/emotiq-wallet-openapi.yaml"
 info:
   title: Emotiq Wallet interface
-  version: 0.0.3
+  version: 0.1.0
 tags:
   - name: consensus
   - name: wallet
@@ -23,7 +24,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/consensus'
+                $ref: 'responses.yaml#/schemas/consensus/'
 # MUST implement:  default wallet is 'My Wallet', but it may be changed
   /wallet/:
     get:
@@ -69,7 +70,6 @@ paths:
   /wallet/{name}:
     tags:
       - wallet
-# MUST implement          
     get:
       description: Summarize information about a wallet
       parameters:
@@ -84,12 +84,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  amount:
-                    description:
-                      The total balance of coin in the wallet
-                    type: integer
+                $ref: 'messages.yaml#/schemas/wallet/default/response'
     delete:
       summary: Delete wallet
       parameters:
@@ -433,6 +428,7 @@ paths:
               type: array
               items:
                 type: string
+# Is this still necessary?                
   '/support':
     post:
       summary: Support request
@@ -458,58 +454,3 @@ paths:
       responses:
         '204':
           description: Success
-components:
-  schemas:
-    consensus:
-      type: object
-      properties:
-        epoch:
-          description: The number of the last sealed block (aka the current chain height)
-          type: integer
-        latestLocalEpoch:
-          description: The highest number of locally synchronized contiguous blocks
-          type: integer
-        synced:
-          description: Whether the connected node is synced with the chain
-          type: boolean
-    transaction:
-      type: object
-      properties:
-        id:
-          type: string
-        timestamp:
-          type: integer
-          format: int64
-        type:
-          description: EMTQ Spend transaction (for example)
-          type: string
-        block:
-          description: included in block
-          type: string
-        fee:
-          type: number
-          format: double
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              cloaked:
-                type: boolean
-              address:
-                type: string
-              amount:
-                type: number
-                foramt: double
-        outputs:
-          type: array
-          items:
-            type: object
-            properties:
-              cloaked:
-                type: boolean
-              address:
-                type: string
-              amount:
-                type: number
-                format: double

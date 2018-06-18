@@ -1,0 +1,73 @@
+$id:   "http://api.emotiq.ch/wallet/messages.yaml"
+schemas:
+  consensus:
+    type: object
+    properties:
+      epoch:
+        description: The number of the last sealed block (aka the current chain height)
+        type: integer
+      latestLocalEpoch:
+        description: The highest number of locally synchronized contiguous blocks
+        type: integer
+      synced:
+        description: Whether the connected node is synced with the chain
+        type: boolean
+  recovery-phrase:
+    response:
+      type: array
+      items:
+        type: string
+  wallet:
+    default:
+      response:
+        type: object
+        properties:
+          address:
+            type: string
+          amount:
+            type: integer
+  transactions:
+    response:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          timestamp:
+            type: integer
+            format: int64
+          type:
+            description: 
+            type: string
+            enum:
+              - spend
+              - stake
+          epoch:
+            description: The epoch which this transaction is part of 
+            type: integer
+          fee:
+            type: integer
+          inputs:
+            type: array
+            items:
+              type: object
+              properties:
+                cloaked:
+                  type: boolean
+                address:
+                  type: string
+                amount:
+                  type: integer
+          outputs:
+            type: array
+            items:
+              type: object
+              properties:
+                cloaked:
+                  type: boolean
+                address:
+                  type: string
+                amount:
+                  type: integer
+  
