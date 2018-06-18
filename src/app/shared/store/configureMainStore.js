@@ -22,12 +22,6 @@ export default function configureMainStore(initialState) {
   const enhancer = compose(...enhanced);
   const store = createStore(() => combineReducers({}), initialState, enhancer);
 
-  if (!process.env.NODE_ENV && module.hot) {
-    module.hot.accept('../reducers', () => {
-      store.replaceReducer(require('../reducers'));
-    });
-  }
-
   replayActionMain(store);
 
   return store;

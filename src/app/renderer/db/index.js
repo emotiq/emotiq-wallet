@@ -8,7 +8,18 @@ import {
   TransactionSchema
 } from './schema';
 
+import os from 'os';
+import fs from 'fs';
+
+const dir = os.homedir + '/.realm';
+
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir);
+}
+
 const Realm = window.require('realm');
+
+Realm.defaultPath = dir + '/emotiq-wallet.realm';
 
 const schema = {
   schema: [AccountSchema, AddressSchema, SettingsSchema, TransactionSchema, TransactionAssetSchema],

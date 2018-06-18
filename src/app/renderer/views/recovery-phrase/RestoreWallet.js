@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 
 import {RECOVERY_PHRASE_LENGTH} from '../../../shared/constants/config';
 
-import {navToHome} from '../../../shared/actions/navigation';
-import {restoreWallet} from '../../../shared/actions/wallet';
+import {navToHome} from '../../actions/navigation';
+import {restoreWallet} from '../../actions/wallet';
 
 import style from './RecoveryPhrase.css';
 

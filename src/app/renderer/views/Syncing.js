@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import style from './Syncing.css';
 import {STATUS} from '../../shared/constants/bootstrap';
-import {syncNode} from '../../shared/actions/bootstrap';
+import {syncNode} from '../actions/bootstrap';
 
 class Terms extends Component {
 

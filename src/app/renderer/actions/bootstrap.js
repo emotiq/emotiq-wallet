@@ -1,8 +1,8 @@
-import {ACCEPT_TERMS, STATUS, SYNC} from '../constants/bootstrap';
-import * as ws from '../ws/client';
+import {ACCEPT_TERMS, STATUS, SYNC} from '../../shared/constants/bootstrap';
+import * as ws from '../../shared/ws/client';
 
-import db from '../../renderer/db/index';
-import {SettingsSchema} from '../../renderer/db/schema';
+import db from '../db/index';
+import {SettingsSchema} from '../db/schema';
 
 const acceptTerms = () => {
   let isTermsAccepted = db.objects(SettingsSchema.name).filtered('name = "isTermsAccepted"')[0];

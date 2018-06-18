@@ -1,7 +1,7 @@
-import {ACCEPT_TERMS, INIT_SETTINGS, STATUS, SYNC} from '../constants/bootstrap';
+import {ACCEPT_TERMS, INIT_SETTINGS, STATUS, SYNC} from '../../shared/constants/bootstrap';
 import {handleActions} from 'redux-actions';
-import db from '../../renderer/db';
-import {SettingsSchema} from '../../renderer/db/schema';
+import db from '../db/index';
+import {SettingsSchema} from '../db/schema';
 
 function getInitialState() {
   Object.keys(INIT_SETTINGS).forEach(key => {

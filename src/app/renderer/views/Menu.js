@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {navToHelp, navToHome, navToNode, navToSettings} from '../../shared/actions/navigation';
+import {navToHelp, navToHome, navToNode, navToSettings} from '../actions/navigation';
 
 import FAIcon from '@fortawesome/react-fontawesome';
 import {faCog, faHome, faQuestionCircle, faSitemap} from '@fortawesome/fontawesome-free-solid';

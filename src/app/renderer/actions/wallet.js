@@ -5,12 +5,12 @@ import {
   SET_PASSWORD,
   SET_WALLET,
   WRITE_DOWN_RECOVERY_PHRASE
-} from '../constants/wallet';
-import {RECOVERY_PHRASE_LENGTH} from '../constants/config';
+} from '../../shared/constants/wallet';
+import {RECOVERY_PHRASE_LENGTH} from '../../shared/constants/config';
 
-import db from '../../renderer/db/index';
-import {AccountSchema} from '../../renderer/db/schema';
-import * as ws from '../ws/client';
+import db from '../db/index';
+import {AccountSchema} from '../db/schema';
+import * as ws from '../../shared/ws/client';
 
 import sha256 from 'crypto-js/sha256';
 import hex from 'crypto-js/enc-hex';

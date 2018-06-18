@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {acceptTerms} from '../../shared/actions/bootstrap';
+import {acceptTerms} from '../actions/bootstrap';
 
 import style from './Terms.css';
 

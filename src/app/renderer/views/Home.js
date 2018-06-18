@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {clipboard} from 'electron';
-import {getWallet, renameWallet, sendEMTQ} from '../../shared/actions/wallet';
+import {getWallet, renameWallet, sendEMTQ} from '../actions/wallet';
 import FAIcon from '@fortawesome/react-fontawesome';
 import {faArrowAltCircleRight, faChartPie, faCopy, faPencilAlt, faReply} from '@fortawesome/fontawesome-free-solid';
 import cx from 'classnames';

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import {Provider} from 'react-redux';
 import registerServiceWorker from './registerServiceWorker';
-import configureRendererStore from '../shared/store/configureRendererStore';
+import configureRendererStore from './configureRendererStore';
 import createHistory from 'history/createMemoryHistory';
 import Bootstrap from './views/Bootstrap';
 
