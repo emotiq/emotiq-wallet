@@ -7,10 +7,12 @@ import {
   SET_ADDRESSES,
   SET_AMOUNT,
   SET_PASSWORD,
+  SET_TRANSACTIONS,
+  SET_WALLET,
   WRITE_DOWN_RECOVERY_PHRASE
-} from '../constants/wallet';
+} from '../../shared/constants/wallet';
 
-import db from '../db';
+import db from '../db/index';
 import {AccountSchema} from '../db/schema';
 
 function getInitialState() {
@@ -36,7 +38,7 @@ const initialWalletState = getInitialState();
 
 const setPassword = (state = initialWalletState, action) => {
   let {activeWallet} = state;
-  activeWallet && (activeWallet.password = action.password);
+  activeWallet && (activeWallet.password = action.payload);
   return {
     ...state,
   };
@@ -50,8 +52,15 @@ const writeDownRecoveryPhrase = (state = initialWalletState) => {
   };
 };
 
+const setWallet = (state = initialWalletState, action) => {
+  state.activeWallet = action.payload;
+  return {
+    ...state,
+  };
+};
+
 const restoreWallet = (state = initialWalletState, action) => {
-  state.activeWallet = action.wallet;
+  state.activeWallet = action.payload;
   return {
     ...state,
   };
@@ -66,7 +75,7 @@ const deleteWallet = (state = initialWalletState) => {
 
 const renameWallet = (state = initialWalletState, action) => {
   let {activeWallet} = state;
-  activeWallet && (activeWallet.name = action.name);
+  activeWallet && (activeWallet.name = action.payload);
   return {
     ...state
   };
@@ -74,7 +83,7 @@ const renameWallet = (state = initialWalletState, action) => {
 
 const setAddresses = (state = initialWalletState, action) => {
   let {activeWallet} = state;
-  activeWallet && (activeWallet.addresses = action.addresses);
+  activeWallet && (activeWallet.addresses = action.payload);
   return {
     ...state
   };
@@ -82,7 +91,15 @@ const setAddresses = (state = initialWalletState, action) => {
 
 const setAmount = (state = initialWalletState, action) => {
   let {activeWallet} = state;
-  activeWallet && (activeWallet.amount = action.amount);
+  activeWallet && (activeWallet.amount = action.payload);
+  return {
+    ...state,
+  };
+};
+
+const setTransactions = (state = initialWalletState, action) => {
+  let {activeWallet} = state;
+  activeWallet && (activeWallet.transactions = action.payload.transactions);
   return {
     ...state,
   };
@@ -90,7 +107,7 @@ const setAmount = (state = initialWalletState, action) => {
 
 const addTransaction = (state = initialWalletState, action) => {
   let {activeWallet} = state;
-  activeWallet && (activeWallet.transactions.push(action.transaction));
+  activeWallet && (activeWallet.transactions.push(action.payload));
   return {
     ...state,
   };
@@ -99,10 +116,12 @@ const addTransaction = (state = initialWalletState, action) => {
 export default handleActions({
   [SET_PASSWORD]: setPassword,
   [WRITE_DOWN_RECOVERY_PHRASE]: writeDownRecoveryPhrase,
+  [SET_WALLET]: setWallet,
   [RESTORE_WALLET]: restoreWallet,
   [DELETE_WALLET]: deleteWallet,
   [RENAME_WALLET]: renameWallet,
   [SET_ADDRESSES]: setAddresses,
   [SET_AMOUNT]: setAmount,
   [ADD_TRANSACTION]: addTransaction,
+  [SET_TRANSACTIONS]: setTransactions,
 }, initialWalletState);

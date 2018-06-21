@@ -11,6 +11,7 @@ stages:
 
 before_script:
   - ci/install-deps.sh
+  - ci/download-node.sh
 
 .build: &build_definition
   stage: build
