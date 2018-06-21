@@ -1,0 +1,370 @@
+:root {
+    --home-header-height: 115px;
+    --home-separator-width: 1px;
+    --home-menu-height: 60px;
+}
+
+.NoWalletHeader {
+    margin-top: 0;
+}
+
+.Home {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.Home > * {
+    flex: 1 100%;
+}
+
+.WalletHeader {
+    position: relative;
+    text-align: center;
+    height: var(--home-header-height);
+}
+
+.WalletHeader input {
+    text-align: center;
+    margin: 20px auto;
+    height: 20px;
+    font-size: 20px;
+    padding: 0;
+    border: none;
+    color: black;
+    background-color: white;
+}
+
+.Rename {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: darkgrey;
+    cursor: default;
+}
+
+.Rename span {
+    padding-left: 10px;
+}
+
+.WalletHeader :hover {
+    color: black;
+}
+
+.WalletMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-top: 1px solid black;
+    border-bottom: var(--home-separator-width) solid black;
+    height: var(--home-menu-height);
+}
+
+.WalletMenu > * {
+    margin: 10px;
+    padding: 10px;
+    cursor: default;
+}
+
+.WalletMenu :hover {
+    background-color: lightgray;
+}
+
+.UpArrow {
+    transform: rotate(270deg) scaleX(-1);
+}
+
+.DownArrow {
+    transform: rotate(90deg) scaleX(-1);
+}
+
+.Arrow {
+    margin: 5px;
+}
+
+.TransactionType {
+    color: black;
+}
+
+.TransactionType > span {
+    color: white;
+    vertical-align: super;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.TransactionAmount {
+    font-size: 24px;
+}
+
+.TransactionDetail {
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 16px;
+}
+
+.Active {
+    background-color: lightgray;
+}
+
+.WalletFunctionalArea {
+    height: calc(100vh - var(--home-menu-height) - var(--home-separator-width) * 2 - var(--home-header-height));
+    overflow: scroll;
+}
+
+.TransactionsWrapper {
+    padding: 10px;
+}
+
+.TransactionsHeader {
+    background-color: darkgrey;
+    color: white;
+    padding: 5px 10px;
+}
+
+.TransactionsSection {
+
+}
+
+.TransactionContainer {
+    background-color: darkgrey;
+    color: white;
+    padding: 10px;
+    border-bottom: 1px solid black;
+    cursor: default;
+}
+
+.TransactionContainer:hover {
+    background-color: dimgray;
+}
+
+.Transaction {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.TransactionDateFee {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: left;
+    border-bottom: 1px solid black;
+}
+
+.TransactionDateFee > p {
+    display: inline-block;
+}
+
+.TransactionDetailRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+.TransactionAssets {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /*align-items: center;*/
+}
+
+.TransactionAssets > * {
+    margin: 5px;
+}
+
+.TransactionAssets :last-child {
+    margin-bottom: 5px;
+}
+
+.TransactionAsset {
+    font-size: 15px;
+    margin-bottom: 35px;
+}
+
+.TransactionAsset :first-child {
+    font-weight: bold;
+    margin-bottom: -9px;
+}
+
+.CenterSelfAlign {
+    align-self: center;
+}
+
+.AlignRight {
+    text-align: right;
+}
+
+.SendWrapper {
+    background-color: darkgrey;
+    color: white;
+    margin: 10px;
+    padding: 10px;
+}
+
+.SendWrapper input {
+    width: calc(100% - 5px * 2);
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.Fee {
+    text-align: right;
+    margin: 0 20px;
+}
+
+.NoMarginBottom {
+    margin-bottom: 0;
+}
+
+.ButtonWrapper {
+    text-align: center;
+    margin: 10px auto 0;
+}
+
+.Button {
+    padding: 5px 25px;
+    font-size: 15px;
+}
+
+.Warning {
+    color: red;
+}
+
+.ReceiveWrapper {
+    background-color: darkgrey;
+    color: white;
+    margin: 10px;
+    padding: 10px;
+}
+
+.UnusedAddressWrapper {
+    border-bottom: 1px solid black;
+}
+
+.UnusedAddressInfoWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.UnusedAddress {
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.UnusedAddress p {
+    color: black;
+}
+
+.UnusedAddress > div > div {
+    display: inline;
+    margin-left: 15px;
+}
+
+.UsedAddressesWrapper {
+    margin: 20px;
+}
+
+.UsedAddress {
+    border-bottom: 1px solid black;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.CopyWrapper {
+    display: inline-table;
+    margin-left: 15px;
+}
+
+.CopyWrapper :hover {
+    color: white;
+}
+
+.Copy {
+    color: black;
+    cursor: default;
+    position: relative;
+    display: inline-block;
+    font-size: 15px;
+}
+
+.Copy span {
+    padding-left: 5px;
+}
+
+.Tooltip {
+    position: absolute;
+    color: white;
+    font-size: 10px;
+    top: -20px;
+    left: -40px;
+    background-color: black;
+    border-radius: 5px;
+    min-width: 110px;
+    padding: 2px;
+    text-align: center;
+}
+
+.WordWrap {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+.FontSize24 {
+    font-size: 24px;
+}
+
+.Modal {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: calc(100vw - (var(--menu-width) + var(--menu-border-right-width)));
+    height: calc(100vh - var(--home-menu-height) - var(--home-separator-width) * 2 - var(--home-header-height));
+    align-items: center;
+    bottom: 0;
+}
+
+.ModalContent {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: dimgray;
+    opacity: 1;
+    max-width: 600px;
+    margin: auto;
+    padding: 10px 30px;
+    min-height: 300px;
+    color: white;
+}
+
+.Columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Pink {
+    color: pink;
+}
+
+.Darkred {
+    color: darkred;
+}
+
+.ButtonPanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.ButtonWrapper {
+    margin: 10px 35px;
+}

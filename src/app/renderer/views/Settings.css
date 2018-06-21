@@ -1,0 +1,109 @@
+:root {
+    --caption-height: 80px;
+    --caption-border-bottom-width: 1px;
+}
+
+.Settings {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex: 100%
+}
+
+.SettingsWrapper {
+    height: 100vh;
+}
+
+.OverflowScroll {
+    overflow-y: scroll;
+}
+
+.OverflowHidden {
+    overflow-y: hidden;
+}
+
+.Setting {
+    background-color: lightgray;
+    margin: 10px;
+    padding: 10px;
+}
+
+.Caption {
+    height: var(--caption-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: solid black;
+    border-bottom-width: var(--caption-border-bottom-width);
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-align: left;
+    display: flex;
+}
+
+.PasswordInputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.PasswordInputs > div {
+    margin-right: 10px;
+}
+
+.RightBottomButton {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+}
+
+.ButtonWrapper {
+    position: relative;
+}
+
+.Rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.Columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Attention {
+    height: 20px;
+    width: 20px;
+    background-color: red;
+    border-radius: 10px;
+    margin: -5px 0 0 5px;
+}
+
+.Modal {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: calc(100vw - (var(--menu-width) + var(--menu-border-right-width)));
+    height: calc(100vh - (var(--caption-height) + var(--caption-border-bottom-width)));
+    align-items: center;
+}
+
+.ModalContent {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: darkgrey;
+    opacity: 1;
+    max-width: 400px;
+    margin: auto;
+    padding: 10px 30px;
+    min-height: 600px;
+}

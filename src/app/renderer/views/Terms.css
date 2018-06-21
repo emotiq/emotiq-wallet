@@ -1,0 +1,32 @@
+.Terms {
+    height: calc(100vh - 20px);
+    padding: 10px;
+}
+
+.Container {
+    background-color: darkgrey;
+    padding: 30Px 60px;
+    height: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Caption {
+    color: white;
+    text-align: left;
+}
+
+.Scroll {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.Confirm {
+    margin-top: 10px;
+}
+
+.ButtonWrapper {
+    text-align: center;
+    margin: 10px;
+}

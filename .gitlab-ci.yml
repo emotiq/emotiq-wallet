@@ -11,13 +11,42 @@ stages:
 
 before_script:
   - ci/install-deps.sh
+  - ci/download-node.sh
 
 .build: &build_definition
   stage: build
   script:
     - ci/build.sh
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - release/
+
+.test: &test_definition
+  stage: test
+  script:
+    - ci/tests.sh
 
 build:linux:
   <<: *build_definition
   tags:
     - linux
+
+build:macos:
+  <<: *build_definition
+  tags:
+    - macos
+
+test:linux:
+  <<: *test_definition
+  tags:
+    - linux
+  dependencies:
+    - build:linux
+
+test:macos:
+  <<: *test_definition
+  tags:
+    - macos
+  dependencies:
+    - build:macos
