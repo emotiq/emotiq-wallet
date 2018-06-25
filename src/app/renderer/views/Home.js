@@ -238,6 +238,7 @@ class Home extends Component {
         <div className={style.ModalContent} onClick={(event) => {
           event.stopPropagation();
         }}>
+          <a href="#" className={style.Close} onClick={() => this.setState({selectedTransaction: null})}/>
           <h1>Transaction Details</h1>
           <p><span className={style.TransactionDetail}>Transaction type: </span>EMTQ {tran.type} transaction</p>
 

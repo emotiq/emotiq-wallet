@@ -368,3 +368,20 @@
 .ButtonWrapper {
     margin: 10px 35px;
 }
+
+.Close {
+    color: #777;
+    font: 14px/100% arial, sans-serif;
+    position: absolute;
+    right: 5px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #fff;
+    top: 5px;
+}
+
+.Close:after {
+    content: 'x';
+    font-weight: bold;
+    color: white;
+    font-size: 20px;
+}
