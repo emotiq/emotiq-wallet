@@ -38,11 +38,11 @@ const acceptTerms = (state = initialState) => {
 
 const setSyncStatus = (state = initialState, action) => {
   let {payload} = action;
-  state.status !== STATUS.SYNCED && (state.status = payload.status);
+  state.status !== STATUS.READY && (state.status !== STATUS.SYNCED || payload.status === STATUS.READY) && (state.status = payload.status);
   return {
     ...state,
-    blocks: payload.blocks,
-    currentBlock: payload.currentBlock,
+    blocks: payload.blocks || state.blocks,
+    currentBlock: payload.currentBlock || state.currentBlock,
   };
 };
 
