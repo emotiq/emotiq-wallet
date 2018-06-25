@@ -110,7 +110,7 @@
 
 .WalletFunctionalArea {
     height: calc(100vh - var(--home-menu-height) - var(--home-separator-width) * 2 - var(--home-header-height));
-    overflow: scroll;
+    overflow: auto;
 }
 
 .TransactionsWrapper {
