@@ -5,6 +5,7 @@ const STATUS = Object.freeze({
     'STARTING': 2,
     'SYNCING': 3,
     'SYNCED': 4,
+    'READY': 5,
   }
 );
 const INIT_SETTINGS = {

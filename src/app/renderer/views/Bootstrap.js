@@ -25,7 +25,7 @@ class Bootstrap extends Component {
     const {bootstrap} = this.props;
     return (
       <div>
-        {bootstrap.status === STATUS.SYNCED ?
+        {bootstrap.status === STATUS.READY ?
           <div>
             <Menu/>
             <ConnectedRouter history={this.props.history}>

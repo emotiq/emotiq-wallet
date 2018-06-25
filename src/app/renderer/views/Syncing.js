@@ -19,9 +19,9 @@ class Terms extends Component {
         <div className={style.Container}>
           <img src={'../images/logo.png'} className={style.Logo}/>
           <span className={style.StatusBar}>
-              {status === STATUS.STARTING ?
-                'Node is starting ...' :
-                'Syncing block ' + currentBlock + ' of ' + blocks + ' (' + Math.floor(currentBlock * 100 / blocks).toFixed() + '%)'}
+              {status === STATUS.STARTING ? 'Node is starting ...' :
+                status === STATUS.SYNCED ? 'getting wallet ...' :
+                  'Syncing block ' + currentBlock + ' of ' + blocks + ' (' + Math.floor(currentBlock * 100 / blocks).toFixed() + '%)'}
               </span>
         </div>
       </div>

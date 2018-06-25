@@ -3,6 +3,9 @@ import * as ws from '../../shared/ws/client';
 
 import db from '../db/index';
 import {SettingsSchema} from '../db/schema';
+import {getWallet} from './wallet';
+
+let isSynced = false;
 
 const acceptTerms = () => {
   let isTermsAccepted = db.objects(SettingsSchema.name).filtered('name = "isTermsAccepted"')[0];
@@ -26,6 +29,17 @@ const syncNode = () => dispatch => {
                 currentBlock: data.localEpoch,
               }
             });
+            if (!isSynced && data.synchronized) {
+              isSynced = true;
+              dispatch(getWallet())
+                .then(() => {
+                  dispatch({
+                    type: SYNC, payload: {
+                      status: STATUS.READY,
+                    }
+                  });
+                });
+            }
           },
           (error) => {
             console.log(error);
