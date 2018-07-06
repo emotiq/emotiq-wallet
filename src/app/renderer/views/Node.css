@@ -139,6 +139,14 @@
     overflow-y: auto;
 }
 
+.Content::-webkit-scrollbar {
+    background-color: #252F55;
+}
+
+.Content::-webkit-scrollbar-thumb {
+    background-color: #666D88;
+}
+
 .UpArrow {
     transform: rotate(270deg) scaleX(-1);
 }

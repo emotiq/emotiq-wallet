@@ -165,6 +165,14 @@
     overflow: auto;
 }
 
+.WalletFunctionalArea::-webkit-scrollbar {
+    background-color: #252F55;
+}
+
+.WalletFunctionalArea::-webkit-scrollbar-thumb {
+    background-color: #666D88;
+}
+
 .TransactionsWrapper {
     padding: 20px 30px 0 30px;
 }

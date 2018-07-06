@@ -17,6 +17,14 @@
     overflow-y: auto;
 }
 
+.SettingsWrapper::-webkit-scrollbar {
+    background-color: #252F55;
+}
+
+.SettingsWrapper::-webkit-scrollbar-thumb {
+    background-color: #666D88;
+}
+
 .OverflowScroll {
     overflow-y: scroll;
 }

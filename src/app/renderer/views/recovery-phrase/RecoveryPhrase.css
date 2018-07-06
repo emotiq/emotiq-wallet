@@ -18,6 +18,14 @@
     border-radius: 5px;
 }
 
+.RecoveryPhrasePanel::-webkit-scrollbar {
+    background-color: #252F55;
+}
+
+.RecoveryPhrasePanel::-webkit-scrollbar-thumb {
+    background-color: #666D88;
+}
+
 .RecoveryPhraseWordWrapper {
     display: flex;
     flex-direction: row;

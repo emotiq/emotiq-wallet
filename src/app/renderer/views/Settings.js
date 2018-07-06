@@ -171,7 +171,7 @@ class Settings extends Component {
           <img src={'../images/arrow-next.svg'}/>
         </button>
       </div>
-    </div>
+    </div>;
 
   _renderModalReadRecoveryPhrase = () =>
     <div className={style.Modal} key='readRecoveryPhrase'
