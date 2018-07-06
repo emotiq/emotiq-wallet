@@ -28,7 +28,7 @@ class ReadRecoveryPhrase extends Component {
         wallet.</p>
       <div className={style.RecoveryPhrasePanel}>
         {this.state.words.map(el => <div key={el.id} className={style.RecoveryPhraseWordWrapper}>
-          <span>{el.id + 1}. </span>
+          <span>{el.id + 1}: </span>
           <input
             className={style.RecoveryPhraseWord}
             disabled={true}
@@ -37,7 +37,7 @@ class ReadRecoveryPhrase extends Component {
       </div>
       <div className={style.ButtonPanel}>
         <div className={style.ButtonWrapper}>
-          <button onClick={() => {
+          <button className={style.Button} onClick={() => {
             const {onNext} = this.props;
             if (typeof onNext === 'function') {
               onNext();

@@ -17,12 +17,20 @@ class Terms extends Component {
     return (
       <div className={style.Main}>
         <div className={style.Container}>
-          <img src={'../images/logo.png'} className={style.Logo}/>
-          <span className={style.StatusBar}>
-              {status === STATUS.STARTING ?
-                'Node is starting ...' :
-                'Syncing block ' + currentBlock + ' of ' + blocks + ' (' + Math.floor(currentBlock * 100 / blocks).toFixed() + '%)'}
-              </span>
+          <img src={'../images/logo.svg'} className={style.Logo}/>
+          <div className={style.StatusBar}>
+                <span className={style.statusText}>
+                  {status === STATUS.STARTING ? 'Node is starting ...' : 'Syncing block'}</span>
+
+              {status === STATUS.SYNCING ?
+                <div className={style.statusBar}>
+                  <div className={style.statusBarProgress}
+                       style={{transform: `scaleX(${(currentBlock / blocks)})`}}/>
+                  <span className={style.statusText}>{`${currentBlock} of ${blocks}`}</span>
+                </div>
+                : null
+              }
+              </div>
         </div>
       </div>
     );

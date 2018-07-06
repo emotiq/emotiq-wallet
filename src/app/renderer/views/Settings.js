@@ -48,11 +48,9 @@ class Settings extends Component {
     const {activeWallet} = this.props.wallet;
 
     return (
-      <div className={cx(style.SettingsWrapper, {
-        [style.OverflowScroll]: !restoreWalletModalIsOpen && !readRecoveryPhraseModalIsOpen && !checkRecoveryPhraseModalIsOpen,
-        [style.OverflowHidden]: restoreWalletModalIsOpen || readRecoveryPhraseModalIsOpen || checkRecoveryPhraseModalIsOpen,
-      })}>
+      <div className={style.SettingsWrapper}>
         <div className={style.Caption}>
+          <img src={'../images/logo-text.svg'} className={style.WalletHeaderLogo}/>
           <h1>Settings</h1>
         </div>
         <div className={style.Settings}>
@@ -71,40 +69,37 @@ class Settings extends Component {
   };
 
   _renderSetPassword = () =>
-    <div key='setPassword' className={cx(style.Setting, style.Columns)}>
-      <div>
-        <h2>Set Wallet Password
-          <div className={style.Attention}/>
-        </h2>
-        <div className={style.PasswordInputs}>
-          <div>
-            <p>Wallet password</p>
-            <input type="password" placeholder="Password" name="password"
-                   onChange={this._handleSetPasswordChange}/>
-          </div>
-          <div>
-            <p>Repeat password</p>
-            <input type="password" placeholder="Password" name="confirmPassword"
-                   onChange={this._handleSetPasswordChange}/>
-          </div>
+    <div key='setPassword' className={cx(style.Setting, style.Columns, style.ChangePassword)}>
+      <div className={style.PasswordInputs}>
+        <div className={style.PasswordInput}>
+          <span className={style.Attention}>Wallet password</span>
+          <input type="password" placeholder="Password" name="password"
+                 onChange={this._handleSetPasswordChange}/>
         </div>
-        <p>Please use a password at least 8 characters long, with at least one uppercase, one lowercase letter and one
-          number.</p>
+        <div className={style.PasswordInput}>
+          <span>Repeat password</span>
+          <input type="password" placeholder="Password" name="confirmPassword"
+                 onChange={this._handleSetPasswordChange}/>
+        </div>
       </div>
-      <div className={style.ButtonWrapper}>
-        <button className={style.RightBottomButton} disabled={!this.state.canSetPassword}
+      <div className={style.PasswordButton}>
+        <p className={style.PasswordLabel}>
+          Please use a password at least 8 characters long,<br/>
+          with at least one uppercase, one lowercase letter and one number.
+        </p>
+        <button className={style.Button} disabled={!this.state.canSetPassword}
                 onClick={
                   () => this.props.setPassword(this.state.password, this.state.confirmPassword)
-                }>Set&nbsp;password
+                }>
+          <span>Set password</span>
+          <img src={'../images/arrow-next.svg'}/>
         </button>
       </div>
     </div>;
 
   _renderWriteDownRecoveryPhrase = () =>
-    <div key='writeRownRecoveryPhrase' className={cx(style.Setting, style.Rows)}>
-      <h2>Write down Wallet Recovery Phrase
-        <div className={style.Attention}/>
-      </h2>
+    <div key='writeRownRecoveryPhrase' className={cx(style.Setting, style.Rows, style.WriteDown)}>
+      <h2>Write down Wallet Recovery Phrase</h2>
       <p>The wallet and tokens are held securely on this device only and not on any servers. If this application
         is
         moved to another device or is deleted, my wallet can be only recovered with a backup phrase. On the
@@ -112,8 +107,10 @@ class Settings extends Component {
         any
         version of Emotiq Wallet in order to restore your wallet.</p>
       <div className={style.ButtonWrapper}>
-        <button className={style.RightBottomButton}
-                onClick={() => this.setState({readRecoveryPhraseModalIsOpen: true})}>Continue
+        <button className={style.Button}
+                onClick={() => this.setState({readRecoveryPhraseModalIsOpen: true})}>
+          <span>Continue</span>
+          <img src={'../images/arrow-next.svg'}/>
         </button>
       </div>
     </div>;
@@ -122,61 +119,65 @@ class Settings extends Component {
     <div key='changePassword' className={cx(style.Setting, style.Rows)}>
       <h2>Change Wallet Password</h2>
       <div className={style.PasswordInputs}>
-        <div>
-          <p>Current password</p>
+        <div className={style.ChangePasswordInput}>
+          <span>Current password</span>
           <input name="oldPassword" type="password" onChange={this._handleChangePasswordChange}/>
         </div>
-        <div>
-          <p>Wallet password</p>
+        <div className={style.ChangePasswordInput}>
+          <span>Wallet password</span>
           <input name="passwordToChange" type="password" onChange={this._handleChangePasswordChange}/>
         </div>
-        <div>
-          <p>Repeat password</p>
+        <div className={style.ChangePasswordInput}>
+          <span>Repeat password</span>
           <input name="confirmPasswordToChange" type="password" onChange={this._handleChangePasswordChange}/>
         </div>
       </div>
-      <div>
-        <p>Please use a password at least 8 characters long, with at least one uppercase, one lowercase letter
-          and
-          one number.</p>
+      <div className={style.PasswordButton}>
+        <p className={style.PasswordLabel}>Please use a password at least 8 characters long,<br/>
+          with at least one uppercase, one lowercase letter and one number.</p>
         <div className={style.ButtonWrapper}>
-          <button className={style.RightBottomButton}
+          <button className={style.Button}
                   onClick={() => {
                     this.props.changePassword(this.state.oldPassword, this.state.passwordToChange, this.state.confirmPasswordToChange);
                   }}
-                  disabled={!this.state.canChangePassword}>Change&nbsp;password
+                  disabled={!this.state.canChangePassword}>
+            Change&nbsp;password
           </button>
         </div>
       </div>
     </div>;
 
   _renderRestoreWallet = () =>
-    <div className={cx(style.Setting, style.Rows)}>
+    <div className={cx(style.Setting, style.Rows, style.RestoreWallet)}>
       <h2>Restore Wallet</h2>
       <p>Restoring a wallet will delete your current wallet from this device and replace it with a restored one.
         In
         order to restore a wallet, on the next screen, you will be asked to enter 24-word recovery phrase.</p>
-      <div>
-        <input type="checkbox" onChange={(e) => {
-          this.setState({canRestoreWallet: e.target.checked});
-        }}/>
-        <span>I understand that restoring a wallet will delete my current wallet from this device</span>
+      <div className={style.RestoreWalletCheckbox}>
+        <div className={style.CheckboxContainer}>
+          <input type="checkbox" onChange={(e) => this.setState({canRestoreWallet: e.target.checked})}
+                 className={style.CheckboxInput}/>
+          <div className={style.Checkbox}
+               style={{background: this.state.canRestoreWallet ? 'rgba(0, 0, 0, 0.2) url("../images/check.svg") center center no-repeat' : ''}}/>
+          <span>I understand that restoring a wallet will delete my current wallet from this device</span>
+        </div>
       </div>
       <div className={style.ButtonWrapper}>
-        <button className={style.RightBottomButton} disabled={!this.state.canRestoreWallet}
+        <button className={style.Button} disabled={!this.state.canRestoreWallet}
                 onClick={() => {
                   this.setState({restoreWalletModalIsOpen: true});
-                }}>Continue
+                }}>
+          <span>Continue</span>
+          <img src={'../images/arrow-next.svg'}/>
         </button>
       </div>
-    </div>;
+    </div>
 
   _renderModalReadRecoveryPhrase = () =>
     <div className={style.Modal} key='readRecoveryPhrase'
          onClick={() => this.setState({readRecoveryPhraseModalIsOpen: false})}>
-      <div className={style.ModalContent} onClick={(event) => {
-        event.stopPropagation();
-      }}>
+      <div className={style.ModalContent} style={{width: 790}}
+           onClick={(event) => event.stopPropagation()}>
         <ReadRecoveryPhrase onNext={() => {
           this.setState({readRecoveryPhraseModalIsOpen: false, checkRecoveryPhraseModalIsOpen: true});
         }}/>
@@ -186,9 +187,8 @@ class Settings extends Component {
   _renderModalCheckRecoveryPhrase = () =>
     <div className={style.Modal} key='checkRecoveryPhrase'
          onClick={() => this.setState({checkRecoveryPhraseModalIsOpen: false})}>
-      <div className={style.ModalContent} onClick={(event) => {
-        event.stopPropagation();
-      }}>
+      <div className={style.ModalContent} style={{width: 790}}
+           onClick={(event) => event.stopPropagation()}>
         <CheckRecoveryPhrase
           onBack={() => {
             this.setState({checkRecoveryPhraseModalIsOpen: false, readRecoveryPhraseModalIsOpen: true});

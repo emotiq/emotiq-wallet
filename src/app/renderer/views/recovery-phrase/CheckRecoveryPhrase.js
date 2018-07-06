@@ -44,20 +44,26 @@ class CheckRecoveryPhrase extends Component {
       </div>
       <div className={style.ButtonPanel}>
         <div className={style.ButtonWrapper}>
-          <button onClick={() => {
-            const {onBack} = this.props;
-            if (typeof onBack === 'function') {
-              onBack();
-            }
-          }}>Back</button>
+          <button className={style.Button}
+                  onClick={() => {
+                    const {onBack} = this.props;
+                    if (typeof onBack === 'function') {
+                      onBack();
+                    }
+                  }}>Back
+          </button>
         </div>
         <div className={style.ButtonWrapper}>
-          <button onClick={() => {
-            const {onNext} = this.props;
-            if (typeof onNext === 'function') {
-              onNext(this.state.words.map(w => w.value).join(' '));
-            }
-          }}>Done</button>
+          <button className={style.Button}
+                  onClick={() => {
+                    const {onNext} = this.props;
+                    if (typeof onNext === 'function') {
+                      onNext(this.state.words.map(w => w.value).join(' '));
+                    }
+                  }}>
+            <span>Done</span>
+            <img src={'../images/arrow-next.svg'}/>
+          </button>
         </div>
       </div>
     </div>;

@@ -4,33 +4,99 @@
 }
 
 .Description {
-    height: 50px;
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 14px;
+    letter-spacing: 0.42px;
+    line-height: 18px;
 }
 
 .RecoveryPhrasePanel {
-    background-color: dimgray;
     max-height: 400px;
     overflow-y: scroll;
+    background-color: rgba(255, 255, 255, 0.06);
+    border-radius: 5px;
 }
 
 .RecoveryPhraseWordWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
     margin: 5px auto;
-    text-align: right;
-    margin-right: 35%;
+    padding: 17px 60px 20px 25px;
     color: white;
 }
 
+.RecoveryPhraseWordWrapper > span {
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 33px;
+}
+
+.RecoveryPhraseWordWrapper > input {
+    margin-left: 20px;
+}
+
 .RecoveryPhraseWord {
-    width: 40%;
+    width: 523px;
+    height: 35px;
+    padding-left: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 16px;
+    letter-spacing: 0.4px;
+    line-height: 19px;
+    border: none;
+    outline: none;
 }
 
 .ButtonPanel {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     margin-top: 20px;
 }
 
 .ButtonWrapper {
     margin: 0 15px;
+}
+
+.Button {
+    position: relative;
+    grid-row: 5;
+    grid-column: 2;
+    height: 76px;
+    min-width: 230px;
+    padding: 0 35px;
+    border: none;
+    border-radius: 38px;
+    background-color: #2A355F;
+    box-shadow: 0 1px 4px 0 rgba(29, 50, 75, 0.56), inset 0 0 0 3px #ff5704;
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 22px;
+    letter-spacing: -0.61px;
+    line-height: 28px;
+    text-align: center;
+    transition-duration: 0.3s;
+    transition-property: background-color;
+}
+
+.Button:hover {
+    background-color: #ff5704;
+}
+
+.Button > img {
+    position: absolute;
+    right: 14px;
+    top: 0;
+    bottom: 0;
+    width: 23px;
+    height: 15px;
+    margin: auto 0;
 }

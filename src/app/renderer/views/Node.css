@@ -9,16 +9,49 @@
     flex-direction: column;
     justify-content: flex-start;
     align-content: center;
-}
-
-.MainContainer > * {
-    flex: 1 100%;
+    height: 100vh;
 }
 
 .Header {
     position: relative;
+    margin-top: 57px;
+    margin-bottom: 25px;
     text-align: center;
-    height: var(--header-height);
+}
+
+.Header > h1 {
+    margin: 0;
+    transform: translateY(-14px);
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 66px;
+    text-align: center;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.PublicKeyContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.PublicKey {
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 14px;
+    letter-spacing: -0.26px;
+    line-height: 18px;
+}
+
+.Header > img {
+    position: absolute;
+    left: 27px;
 }
 
 .TabsMenu {
@@ -41,20 +74,68 @@
 }
 
 .Tab {
-    background-color: darkgrey;
-    margin: 10px;
-    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin: 0 30px 30px 30px;
+    padding: 64px 75px 32px 75px;
+    background-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 10px 3px rgba(0, 0, 0, 0.2);
 }
 
-.Tab > input {
-    border: 1px solid black;
-    width: 100%;
-    padding: 3px;
+.Tab > .ButtonPanel {
+    margin-top: auto;
+}
+
+.Tab > h2 {
+    display: inherit;
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    line-height: 43px;
+    text-align: center;
+}
+
+.Tab > h3 {
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    line-height: 43px;
+}
+
+.Tab > p {
+    margin-top: 64px;
+    margin-bottom: 94px;
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 14px;
+    letter-spacing: -0.26px;
+    line-height: 18px;
+}
+
+.Tab .Paragraph {
+    display: flex;
+    flex-direction: row;
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 14px;
+    letter-spacing: -0.26px;
+    line-height: 18px;
+}
+
+.Tab .Paragraph > img {
+    margin-right: 30px;
 }
 
 .Content {
     position: relative;
-    height: calc(100vh - var(--header-height) - 2 * var(--separator-width) - var(--menu-height));
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     overflow-y: auto;
 }
 
@@ -76,8 +157,42 @@
 }
 
 .Button {
-    padding: 5px 25px;
-    font-size: 15px;
+    position: relative;
+    grid-row: 5;
+    grid-column: 2;
+    height: 60px;
+    min-width: 235px;
+    border: none;
+    border-radius: 38px;
+    background-color: #2A355F;
+    box-shadow: 0 1px 4px 0 rgba(29, 50, 75, 0.56), inset 0 0 0 3px #ff5704;
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    transition-duration: 0.3s;
+    transition-property: background-color;
+    cursor: pointer;
+}
+
+.Button:hover {
+    background-color: #ff5704;
+}
+
+.Button:disabled {
+    opacity: 0.3;
+    background-color: #2A355F;
+}
+
+.Button > img {
+    position: absolute;
+    right: 14px;
+    top: 0;
+    bottom: 0;
+    width: 23px;
+    height: 15px;
+    margin: auto 0;
 }
 
 .ButtonPanel {
@@ -92,37 +207,71 @@
 }
 
 .Cards {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-gap: 15px 30px;
+    grid-template-areas: "peers peers blocks blocks transactions transactions" "utxo utxo rate rate last last" "funds funds funds total total total";
+    margin: 0 30px 30px 30px;
 }
 
 .Card {
-    background-color: darkgrey;
-    margin: 20px;
-    padding: 5px 20px;
-    width: 150px;
-    height: 100px;
+    min-width: 200px;
+    height: 200px;
+    padding: 25px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.3) no-repeat center right 25px;
 }
 
-.Card p {
-    text-align: right;
+.Card > p {
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 17px;
+    letter-spacing: -0.47px;
+    line-height: 20px;
 }
 
 .Card div {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    color: #FFFFFF;
+    font-family: "BB Roller Mono Pro ST";
+    font-size: 60px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    line-height: 72px;
+}
+
+.Card.Timestamp div {
+    width: 200px;
+    color: #FFFFFF;
+    font-family: "BB Roller Mono Pro ST";
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    line-height: 36px;
+}
+
+.Card.Funds div {
+    color: #FFFFFF;
+    font-family: "BB Roller Mono Pro ST";
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 60px;
 }
 
 .Address {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-width: 640px;
+    height: 35px;
+    margin-left: 28px;
+    padding: 0 20px;
+    opacity: 0.5;
+    color: #FFFFFF;
+    font-family: "Range Mono";
     font-size: 14px;
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-    overflow-wrap: break-word;
+    letter-spacing: -0.26px;
+    line-height: 18px;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .Modal {
@@ -148,5 +297,112 @@
 }
 
 .Red {
-    color: darkred;
+    color: #FF5704 !important;
+}
+
+.Menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-shrink: 0;
+    margin: 0 10px 40px 10px;
+}
+
+.MenuTab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 3);
+    height: 100px;
+    margin: 0 15px;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 3px #ff5704;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    line-height: 43px;
+    cursor: pointer;
+}
+
+.MenuTab > img {
+    position: absolute;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    margin: auto 35px;
+}
+
+.MenuTab > .MenuTabIcon {
+    position: absolute;
+    left: 0;
+    width: 58px;
+    height: 58px;
+    margin: auto 25px;
+}
+
+.Active {
+    background-color: #ff5704;
+}
+
+.Active > .MenuTabIcon {
+    opacity: 0.3;
+}
+
+.Input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Input > img {
+    margin-left: 18px;
+}
+
+.Input > input {
+    height: 55px;
+    padding: 0 20px;
+    border: none;
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 26px;
+    letter-spacing: 0.78px;
+    line-height: 32px;
+}
+
+.UnstakeModal {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.UnstakeModal > div {
+    margin-bottom: 30px;
+}
+
+.UnstakeModal h3 {
+    display: inline;
+    margin-right: 50px;
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.63px;
+    line-height: 36px;
+}
+
+.UnstakeModal span {
+    display: inline-block;
+    padding: 0 20px;
+    line-height: 55px;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 22px;
+    letter-spacing: 0.66px;
 }

@@ -1,11 +1,22 @@
 .Terms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: calc(100vh - 20px);
-    padding: 10px;
+}
+
+.Logo {
+    height: 152px;
+    width: 541px;
+    margin: 71px 0 56px 0;
 }
 
 .Container {
-    background-color: darkgrey;
-    padding: 30Px 60px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 10px 3px rgba(0, 0, 0, 0.2);
+    padding: 0 136px;
+    margin: 0 30px 36px 30px;
     height: calc(100% - 60px);
     display: flex;
     flex-direction: column;
@@ -13,20 +24,94 @@
 }
 
 .Caption {
-    color: white;
-    text-align: left;
+    margin-top: 76px;
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    line-height: 43px;
+    text-align: center;
 }
 
 .Scroll {
     overflow-y: auto;
     flex: 1;
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    line-height: 18px;
 }
 
 .Confirm {
-    margin-top: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    margin-top: 32px;
+    color: #FFFFFF;
+    font-family: Axiforma;
+    font-size: 16px;
+    letter-spacing: 0.46px;
+    line-height: 25px;
 }
 
 .ButtonWrapper {
     text-align: center;
     margin: 10px;
+}
+
+.AcceptButton {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 298px;
+    height: 76px;
+    margin-top: 40px;
+    margin-bottom: 36px;
+    border: 3px solid #FF5704;
+    border-radius: 38px;
+    background-color: #FF5704;
+    box-shadow: 0 1px 4px 0 rgba(29, 50, 75, 0.56);
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 22px;
+    letter-spacing: -0.61px;
+    line-height: 28px;
+    text-align: center;
+}
+
+.AcceptButton:disabled {
+    opacity: 0.5;
+}
+
+.AcceptButton > img,
+.AcceptButton > span {
+    margin-left: auto;
+}
+
+.AcceptButton > img {
+    transform: translateX(-33px);
+}
+
+.CheckboxInput {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 40px;
+    width: 40px;
+    margin: 0;
+    opacity: 0;
+    z-index: 1;
+}
+
+.Checkbox {
+    height: 40px;
+    width: 40px;
+    margin-right: 16px;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: -1;
 }

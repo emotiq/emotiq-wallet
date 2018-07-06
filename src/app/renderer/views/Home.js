@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {clipboard} from 'electron';
 import {getWallet, renameWallet, sendEMTQ} from '../actions/wallet';
-import FAIcon from '@fortawesome/react-fontawesome';
-import {faArrowAltCircleRight, faChartPie, faCopy, faPencilAlt, faReply} from '@fortawesome/fontawesome-free-solid';
 import cx from 'classnames';
 import QRCode from 'qrcode.react';
 import _ from 'lodash';
@@ -117,6 +115,10 @@ class Home extends Component {
     return tran.inputs.reduce((a, c) => a + c.amount, 0);
   };
 
+  _getTrimmedAddress = (address, leftPartlength = 10, rightPartLenght = 10) => {
+    return address.substr(0, leftPartlength) + '...' + address.slice(-rightPartLenght);
+  };
+
   render = () => {
     const {activeWallet} = this.props.wallet;
     const {activeTab, confirmSendModalIsOpen} = this.state;
@@ -125,36 +127,39 @@ class Home extends Component {
         {!!activeWallet ? (
             <div className={style.Home}>
               <div className={style.WalletHeader}>
+                <img src={'../images/logo-text.svg'} className={style.WalletHeaderLogo}/>
                 <input typeof={'text'} value={this.state.walletName} disabled={!this.state.editWalletName}
                        id={'walletName'}
                        onChange={(e) => this.setState({walletName: e.target.value})}
                        onKeyDown={this._onKeyPressWalletName}
-                       onBlur={this._changeWalletName}/>
-                <p>{(this._getWalletAmount()).toFixed(EMTQ_DIVISIBILITY)} EMTQ</p>
-                <div className={style.Rename} onClick={() => {
+                       onBlur={this._changeWalletName} className={style.WalletName}/>
+                <div className={style.WalletHeaderBalance}>
+                  <span>{(this._getWalletAmount()).toFixed(EMTQ_DIVISIBILITY)} EMTQ</span>
+                  <img src={'../images/info.svg'}/>
+                </div>
+                <img className={style.Rename} src={'../images/dots-vert.svg'} onClick={() => {
                   this.setState({editWalletName: true});
                   let header = document.getElementById('walletName');
                   setTimeout(() => header.focus(), 0);
-                }}>
-                  <FAIcon icon={faPencilAlt}/>
-                  <span>Rename</span>
-                </div>
+                }}/>
               </div>
               <div className={style.WalletMenu}>
-                <div className={activeTab === 'transactions' ? style.Active : ''}
+                <div className={`${style.MenuTab} ${activeTab === 'transactions' ? style.Active : ''}`}
                      onClick={() => this.setState({activeTab: 'transactions'})}>
-                  <FAIcon icon={faChartPie}/>
+                  <img src={'../images/transactions-ico.svg'} className={style.MenuTabIcon}/>
                   <span>Transactions</span>
                 </div>
-                <div className={activeTab === 'send' ? style.Active : ''}
+                <div className={`${style.MenuTab} ${activeTab === 'send' ? style.Active : ''}`}
                      onClick={() => this.setState({activeTab: 'send'})}>
-                  <FAIcon icon={faReply} className={style.UpArrow}/>
+                  <img src={'../images/send-ico.svg'} className={style.MenuTabIcon}/>
                   <span>Send</span>
+                  <img src={'../images/info.svg'}/>
                 </div>
-                <div className={activeTab === 'receive' ? style.Active : ''}
+                <div className={`${style.MenuTab} ${activeTab === 'receive' ? style.Active : ''}`}
                      onClick={() => this.setState({activeTab: 'receive'})}>
-                  <FAIcon icon={faReply} className={style.DownArrow}/>
+                  <img src={'../images/receive-ico.svg'} className={style.MenuTabIcon}/>
                   <span>Receive</span>
+                  <img src={'../images/info.svg'}/>
                 </div>
               </div>
               <div className={style.WalletFunctionalArea}>
@@ -190,34 +195,54 @@ class Home extends Component {
     return (
       <div className={style.TransactionsWrapper}>
         <div className={style.TransactionsHeader}>
-          <h2>{activeWallet.name}</h2>
-          <p>{this._getWalletAmount()} EMTQ</p>
-          <p>Number of transactions: {!!activeWallet.transactions ? activeWallet.transactions.length : 0}</p>
+          <h2>My balance</h2>
+          <p className={style.TransactionsHeaderBalance}>{this._getWalletAmount()} <span
+            className={style.TransactionsHeaderBalanceLabel}>EMTQ</span></p>
+          <div className={style.TransactionsHeaderAddress}>
+            <span>{this._getTrimmedAddress(activeWallet.address)}</span>
+            <img src={'../images/info.svg'}/>
+          </div>
+          <img src={'../images/wallet.svg'}/>
+        </div>
+        <div className={style.TransactionsFilters}>
+          <span className={style.NumberOfTransactions}>Number of transactions:
+            <span
+              className={style.NumberOfTransactionsLabel}>{!!activeWallet.transactions ? activeWallet.transactions.length : 0}</span>
+          </span>
+          <div className={style.DateFilter}>
+            <span>From </span>
+            <input value="Dec 08. 2017"/>
+            <span>To </span>
+            <input value="Dec 08. 2017"/>
+          </div>
+          <div className={style.StatusFilter}>
+            <span className={style.StatusSelected}>all</span>
+            <span>received</span>
+            <span>send</span>
+            <span>recent</span>
+          </div>
         </div>
         {Object.keys(transactions).map((key) => {
           return (
             <div key={key} className={style.TransactionsSection}>
-              <h2>{key}</h2>
+              <span className={style.TransactionDate}>{key}</span>
               {transactions[key].map((tran) => {
                 return (
-                  <div className={style.TransactionContainer} key={tran.id}
+                  <div className={style.Transaction} key={tran.id}
                        onClick={() => this.setState({selectedTransaction: tran})}>
-                    <div className={style.Transaction}>
-                      <div className={style.TransactionType}>
-                        <FAIcon icon={faReply} size='2x'
-                                className={cx(style.Arrow, {
-                                  [style.DownArrow]: tran.direction === 'IN',
-                                  [style.UpArrow]: tran.direction === 'OUT',
-                                })}/>
-                        <span>{tran.direction === 'IN' ? 'Receive' : 'Sent'}</span>
-                      </div>
-                      <div
-                        className={style.TransactionAmount}>{(this._getTransactionAmount(tran) / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ
-                      </div>
-                      <div className={style.AlignRight}>
-                        <p>EMTQ {tran.type} transaction</p>
-                        <p>{this._getTransactionTime(tran.timestamp)}</p>
-                      </div>
+                    <div>
+                      <img src={`../images/${tran.direction === 'IN' ? 'in' : 'out'}.svg`}/>
+                      <span className={style.TransactionDirection}>{tran.direction}</span>
+                    </div>
+                    <div className={style.TransactionAmount}>
+                      {(this._getTransactionAmount(tran) / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ
+                    </div>
+                    <div className={style.TransactionAddress}>
+                      <img src={`../images/${tran.direction === 'IN' ? 'in' : 'out'}-arrow.svg`}/>
+                      <span className={style.TransactionId}>{tran.id}</span>
+                    </div>
+                    <div className={style.AlignRight}>
+                      <span className={style.TransactionTime}>{this._getTransactionTime(tran.timestamp)}</span>
                     </div>
                   </div>
                 );
@@ -233,60 +258,72 @@ class Home extends Component {
     const {selectedTransaction: tran} = this.state;
     return (
       <div className={style.Modal} onClick={() => this.setState({selectedTransaction: null})}>
-        <div className={style.ModalContent} onClick={(event) => {
-          event.stopPropagation();
-        }}>
-          <h1>Transaction Details</h1>
-          <p><span className={style.TransactionDetail}>Transaction type: </span>EMTQ {tran.type} transaction</p>
+        <div className={style.ModalContent} onClick={(event) => event.stopPropagation()}>
 
-          <div className={style.TransactionDetailRow}>
-            <div className={style.TransactionDetail}>Transaction&nbsp;ID:</div>
-            <div>
-              <div className={style.WordWrap}>
+          <h1>Transaction Details</h1>
+          <div className={style.TransactionDetails}>
+            <div className={cx(style.TransactionDetailsLabel, style.TransactionTypeLabel)}>Transaction type:</div>
+            <div className={style.TransactionTypeRow}>
+              <img src={`../images/${tran.direction === 'IN' ? 'in' : 'out'}.svg`}/>
+              <span className={style.TransactionDirection}>{tran.direction}</span>
+              <span className={style.TransactionTypeLabel}>EMTQ {tran.type} transaction</span>
+            </div>
+
+            <div className={cx(style.TransactionDetailsLabel, style.TransactionIdLabel)}>Transaction&nbsp;ID:</div>
+            <div className={style.TransactionIdRow}>
+              <div className={style.TransactionIdCopy}>
+                <img src={`../images/${tran.direction === 'IN' ? 'in' : 'out'}-arrow.svg`}/>
                 <span>{tran.id}</span>
                 <CopyButton copyText={tran.id}/>
               </div>
             </div>
-          </div>
 
-          <div className={style.TransactionDetailRow}>
-            <div className={style.TransactionDetail}>Included&nbsp;in&nbsp;block:</div>
-            <div>
-              <div className={style.WordWrap}>
-                <span>{tran.block}</span>
+            <div
+              className={cx(style.TransactionDetailsLabel, style.TransactionBlockLabel)}>Included&nbsp;in&nbsp;block:
+            </div>
+            <div className={style.TransactionBlockRow}>{this._getTrimmedAddress(tran.block, 20, 15)}</div>
+
+            <div className={style.TransactionDateRow}>
+              <span className={style.TransactionDetailsLabel}>Date and Time: </span>
+              <div className={style.TransactionRowDate}>
+                <span>{this._getTransactionDateTime(tran.timestamp)}</span>
               </div>
             </div>
-          </div>
-          <div className={style.TransactionDateFee}>
-            <p>
-              <span className={style.TransactionDetail}>Date and Time: </span>
-              {this._getTransactionDateTime(tran.timestamp)}
-            </p>
-            <p>
-              <span className={style.TransactionDetail}>Fee: </span>
-              {(tran.fee / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ
-            </p>
+            <div className={style.TransactionFeeRow}>
+              <span className={style.TransactionDetailsLabel}>Fee: </span>
+              <div className={style.TransactionRowDate}>
+                <span>{(tran.fee / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ</span>
+              </div>
+            </div>
+
           </div>
           <div className={style.TransactionAssets}>
             <div>
               {tran.inputs.map(input => (
                 <div key={input.address} className={style.TransactionAsset}>
-                  <p className={style.WordWrap}>{input.address}</p>
-                  <p>{(input.amount / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ</p>
+                  <div className={style.TransactionRowDate}>
+                    <span>{this._getTrimmedAddress(input.address, 20)}</span>
+                  </div>
+                  <span
+                    className={style.TransactionAssetAmount}>{(input.amount / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ</span>
                 </div>
               ))}
             </div>
-            <div className={style.CenterSelfAlign}>
-              <FAIcon icon={faArrowAltCircleRight} size={'2x'} inverse='true'/>
-            </div>
+            <img className={style.AssetsArrow} src={'../images/out-arrow.svg'}/>
             <div>
               {tran.outputs.map(output => (
                 <div key={output.address} className={style.TransactionAsset}>
-                  <p className={style.WordWrap}>{output.address}</p>
-                  <p>{(output.amount / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ</p>
+                  <div className={style.TransactionRowDate}>
+                    <span>{this._getTrimmedAddress(output.address, 20)}</span>
+                  </div>
+                  <span
+                    className={style.TransactionAssetAmount}>{(output.amount / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)} EMTQ</span>
                 </div>
               ))}
             </div>
+            <button className={style.Button} style={{margin: 'auto'}}
+                    onClick={() => this.setState({selectedTransaction: null})}>Close
+            </button>
           </div>
         </div>
       </div>
@@ -297,22 +334,32 @@ class Home extends Component {
     const {sendAmount, sendAddress} = this.state;
     return (
       <div className={style.SendWrapper}>
-        <h2>Recipient</h2>
-        <input placeholder='Wallet address' value={sendAddress}
-               onChange={(e) => this.setState({sendAddress: e.target.value}, this._validateSendInfo)}/>
-        <h2 className={style.NoMarginBottom}>Amount</h2>
-        <p className={cx(style.Fee, {[style.Warning]: !this._isEnoughMoneyForSend()})}>
-          {this._isEnoughMoneyForSend() ?
-            ('+' + (this._getFees()).toFixed(EMTQ_DIVISIBILITY) + ' of fees') :
-            'I have not enough EMTQ for fees. Try sending a smaller amount'}
-        </p>
-        <input type='number' min={0} step={Math.pow(0.1, EMTQ_DIVISIBILITY)} value={sendAmount}
-               onChange={(e) => this.setState({sendAmount: e.target.value}, this._validateSendInfo)}/>
-        <div className={style.ButtonWrapper}>
-          <button className={style.Button} disabled={!this.state.isValidSend}
-                  onClick={() => this.setState({confirmSendModalIsOpen: true})}>Next
-          </button>
+        <h2>Confirm Transaction</h2>
+        <div className={cx(style.SendInputGroup, style.SendTo)}>
+          <span>To:</span>
+          <input placeholder='Wallet address' value={sendAddress}
+                 onChange={(e) => this.setState({sendAddress: e.target.value}, this._validateSendInfo)}/>
         </div>
+        <div className={cx(style.SendInputGroup, style.SendAmount)}>
+          <span>Amount</span>
+          <input type='number' min={0} step={Math.pow(0.1, EMTQ_DIVISIBILITY)} value={sendAmount}
+                 onChange={(e) => this.setState({sendAmount: e.target.value}, this._validateSendInfo)}/>
+        </div>
+        <div className={cx(style.SendInputGroup, style.SendFees)}>
+          <span>Fees</span>
+          <input value={this._getFees().toFixed(EMTQ_DIVISIBILITY)} disabled={true}/>
+        </div>
+        <div className={cx(style.SendInputGroup, style.SendTotal)}>
+          <span>Total</span>
+          <input style={{color: this._isEnoughMoneyForSend() ? 'white' : '#FF5704'}}
+                 value={(parseFloat(this.state.sendAmount) + parseFloat(this._getFees())).toFixed(EMTQ_DIVISIBILITY)}
+                 disabled={true}/>
+        </div>
+        <button className={style.Button} disabled={!this.state.isValidSend}
+                onClick={() => this.setState({confirmSendModalIsOpen: true})}>
+          Send
+          <img src={'../images/arrow-next.svg'}/>
+        </button>
       </div>
     );
   };
@@ -321,27 +368,24 @@ class Home extends Component {
     const {activeWallet} = this.props.wallet;
     return (
       <div className={style.ReceiveWrapper}>
-        <div className={style.UnusedAddressWrapper}>
-          <div className={style.UnusedAddressInfoWrapper}>
-            <QRCode size={96} value={this._getUnusedAddress()}/>
-            <div className={style.UnusedAddress}>
-              <div className={cx(style.WordWrap, style.FontSize24)}>
-                <span>{this._getUnusedAddress()}</span><CopyButton text='Copy' copyText={this._getUnusedAddress()}/>
-              </div>
-              <p>Your wallet address</p>
-            </div>
+        <h2 className={style.ReceiveTitle}>Your wallet address</h2>
+        <div className={style.UnusedAddressInfoWrapper}>
+          <div className={style.ReceiveQrWrapper}>
+            <QRCode size={111} value={this._getUnusedAddress()}/>
           </div>
-          <p>Share this wallet address to receive payments. To protect your privacy, new addresses are generated
-            automatically once you use them</p>
+          <div className={style.ReceiveAddress}>
+            <span>{this._getUnusedAddress()}</span>
+            <CopyButton text='Copy' copyText={this._getUnusedAddress()}/>
+          </div>
         </div>
+        <p>Share this wallet address to receive payments.<br/>To protect your privacy, new addresses are generated
+          automatically once you use them</p>
         <div className={style.UsedAddressesWrapper}>
           <h2>Used addresses</h2>
           <div>
             {activeWallet.addresses.filter(a => a.used).map(el => <div className={style.UsedAddress} key={el.address}>
-                <div>
-                  <span className={cx(style.WordWrap, style.FontSize24)}>{el.address}</span>
-                </div>
-                <CopyButton text='Copy' copyText={el.address}/>
+                <span>{this._getTrimmedAddress(el.address, 25)}</span>
+                <CopyButton copyText={el.address}/>
               </div>
             )}
           </div>
@@ -358,31 +402,35 @@ class Home extends Component {
           event.stopPropagation();
         }}>
           <h1>Confirm Transaction</h1>
-          <h2>To</h2>
-          <p className={cx(style.WordWrap, style.FontSize24)}>{this.state.sendAddress}</p>
+          <div className={style.SendInputGroup}>
+            <span>To</span>
+            <p>{this.state.sendAddress}</p>
+          </div>
           <div className={style.Columns}>
-            <div>
-              <h2>Amount</h2>
-              <p className={style.Darkred}>{this.state.sendAmount} EMTQ</p>
+            <div className={style.SendInputGroup}>
+              <span>Amount</span>
+              <p>{this.state.sendAmount} EMTQ</p>
             </div>
-            <div>
-              <h2>Fees</h2>
-              <p className={style.Pink}>+ {this._getFees().toFixed(EMTQ_DIVISIBILITY)} EMTQ</p>
+            <div className={style.SendInputGroup}>
+              <span>Fees</span>
+              <p>+ {this._getFees().toFixed(EMTQ_DIVISIBILITY)} EMTQ</p>
             </div>
           </div>
-          <div>
-            <h2>Total</h2>
-            <p className={style.Darkred}>
+          <div className={style.SendInputGroup}>
+            <span>Total</span>
+            <p>
               {(+this.state.sendAmount + this._getFees()).toFixed(EMTQ_DIVISIBILITY)} EMTQ
             </p>
           </div>
           <div className={style.ButtonPanel}>
             <div className={style.ButtonWrapper}>
-              <button onClick={() => this.setState({confirmSendModalIsOpen: false})}>Cancel</button>
+              <button className={style.Button} onClick={() => this.setState({confirmSendModalIsOpen: false})}>Cancel
+              </button>
             </div>
             <div className={style.ButtonWrapper}>
-              <button
-                onClick={this._sendEMTQ}>Send
+              <button className={style.Button}
+                      onClick={this._sendEMTQ}>
+                Send
               </button>
             </div>
           </div>
@@ -405,7 +453,7 @@ class CopyButton extends Component {
   _copy = () => {
     clipboard.writeText(this.props.copyText || '');
     this.setState({showTooltip: true});
-    this._timer = setTimeout(() => this.setState({showTooltip: false}), 500);
+    this._timer = setTimeout(() => this.setState({showTooltip: false}), 1000);
   };
 
   componentWillUnmount() {
@@ -416,8 +464,7 @@ class CopyButton extends Component {
     <div className={style.CopyWrapper}>
       <div className={style.Copy} onClick={this._copy}>
         {this.state.showTooltip ? <div className={style.Tooltip}> Address has been copied</div> : null}
-        <FAIcon icon={faCopy}/>
-        {!!this.props.text && <span>{this.props.text}</span>}
+        <img src={'../images/ico-copy.svg'}/>
       </div>
     </div>
   );

@@ -7,24 +7,39 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: var(--menu-width);
-    height: 100vh;
-    border-right: solid black;
-    border-right-width: var(--menu-border-right-width);
+    align-items: center;
     float: left;
+    height: 100vh;
+    width: 90px;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .Menu > .MenuItem:last-child {
     margin-top: auto;
-    margin-bottom: 10px;
+    margin-bottom: 105px;
+}
+
+.Logo {
+    width: 59px;
+    height: 69px;
+    padding: 38px 0 85px 0;
 }
 
 .MenuItem {
-    padding: 10px;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90px;
+    cursor: pointer;
+}
+
+.MenuItem:hover {
+    background-color: rgba(42, 53, 95, 0.3);
 }
 
 .MenuItem figure {
+    position: relative;
     text-align: center;
     margin: 0;
     color: black;
@@ -34,18 +49,34 @@
     text-decoration: none;
 }
 
-.Notification {
+.Badge {
     position: absolute;
-    background-color: red;
-    width: 20px;
-    height: 24px;
-    border-radius: 19px;
-    right: 0;
-    top: 0;
+    left: calc(100% - 7px);
+    bottom: calc(100% - 7px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+
+    background-color: #FF5704;
+    color: #FFFFFF;
+    font-family: "BB Roller Mono Pro ST";
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14px;
+    line-height: 13px;
     text-align: center;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 6px 5px 0 5px;
-    margin: 3px;
+}
+
+.IcoLabel {
+    margin-top: 10px;
+    opacity: 0.3;
+    color: #FFFFFF;
+    font-family: "Range Mono";
+    font-size: 11px;
+    letter-spacing: -0.55px;
+    line-height: 13px;
+    text-align: center;
 }

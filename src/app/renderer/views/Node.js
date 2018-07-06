@@ -1,19 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {clipboard} from 'electron';
-import FAIcon from '@fortawesome/react-fontawesome';
-import {
-  faBars,
-  faChartBar,
-  faChartLine,
-  faDatabase,
-  faEllipsisH,
-  faReply,
-  faShareAlt,
-  faTh
-} from '@fortawesome/fontawesome-free-solid';
-import {faCircle} from '@fortawesome/fontawesome-free-regular';
-
+import cx from 'classnames';
 import style from './Node.css';
 import {EMTQ_DIVISIBILITY, POWER_DIVISIBILITY} from '../../shared/constants/config';
 import {stake, unstake} from '../actions/node';
@@ -34,6 +21,11 @@ class Node extends Component {
     };
   }
 
+  _getTrimmedAddress = (address, leftPartlength = 10, rightPartLenght = 10) => {
+    return address.substr(0, leftPartlength) + '...' + address.slice(-rightPartLenght);
+  };
+
+
   render = () => {
     const {node} = this.props;
     const {activeTab} = this.state;
@@ -41,24 +33,30 @@ class Node extends Component {
       <div>
         <div className={style.MainContainer}>
           <div className={style.Header}>
+            <img src={'../images/logo-text.svg'}/>
             <h1>{node.name}</h1>
-            <p className={style.Address}>{node.address}</p>
+            <div className={style.PublicKeyContainer}>
+              <span className={style.PublicKey}>Node publickey</span>
+              <div className={style.Address}>{this._getTrimmedAddress(node.address, 20)}</div>
+            </div>
           </div>
-          <div className={style.TabsMenu}>
-            <div className={activeTab === 'status' ? style.Active : ''}
+          <div className={style.Menu}>
+            <div className={`${style.MenuTab} ${activeTab === 'status' ? style.Active : ''}`}
                  onClick={() => this.setState({activeTab: 'status'})}>
-              <FAIcon icon={faChartBar}/>
-              <span> Status</span>
+              <img src={'../images/transactions-ico.svg'} className={style.MenuTabIcon}/>
+              <span>Status</span>
             </div>
-            <div className={activeTab === 'stake' ? style.Active : ''}
+            <div className={`${style.MenuTab} ${activeTab === 'stake' ? style.Active : ''}`}
                  onClick={() => this.setState({activeTab: 'stake'})}>
-              <FAIcon icon={faReply} className={style.UpArrow}/>
-              <span> Stake</span>
+              <img src={'../images/send-ico.svg'} className={style.MenuTabIcon}/>
+              <span>Stake</span>
+              <img src={'../images/info.svg'}/>
             </div>
-            <div className={activeTab === 'unstake' ? style.Active : ''}
+            <div className={`${style.MenuTab} ${activeTab === 'unstake' ? style.Active : ''}`}
                  onClick={() => this.setState({activeTab: 'unstake'})}>
-              <FAIcon icon={faReply} className={style.DownArrow}/>
-              <span> UnStake</span>
+              <img src={'../images/receive-ico.svg'} className={style.MenuTabIcon}/>
+              <span>UnStake</span>
+              <img src={'../images/info.svg'}/>
             </div>
           </div>
           <div className={style.Content}>
@@ -67,10 +65,8 @@ class Node extends Component {
                 {this._renderStatus()}
               </div>
             )}
-            {(activeTab === 'stake') && this._renderStake()}
-            {this.state.confirmStakeModalIsOpen && this._renderStakeModal()}
-            {(activeTab === 'unstake') && this._renderUnstake()}
-            {this.state.confirmUnstakeModalIsOpen && this._renderUnstakeModal()}
+            {(activeTab === 'stake') && (this.state.confirmStakeModalIsOpen ? this._renderStakeModal() : this._renderStake())}
+            {(activeTab === 'unstake') && (this.state.confirmUnstakeModalIsOpen ? this._renderUnstakeModal() : this._renderUnstake())}
           </div>
         </div>
       </div>
@@ -106,16 +102,24 @@ class Node extends Component {
     const {node} = this.props;
     return (
       <div className={style.Cards}>
-        <Card title='# of peers' icon={faShareAlt} text={node.numberOfPeers}/>
-        <Card title='# of blocks' icon={faBars} text={node.numberOfBlocks}/>
-        <Card title='# of transactions' icon={faTh} text={node.numberOfTransactions}/>
-        <Card title='# of UTXOs' icon={faEllipsisH} text={node.numberOfUTXOs}/>
-        <Card title='transaction rate(tps)' icon={faChartLine} text={node.transactionRate}/>
-        <Card title='last timestamp' text={this._parseDate(node.lastTimestamp)}/>
-        <Card title='My funds in escrow' icon={faCircle}
-              text={(node.myFundsInEscrow / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)}/>
-        <Card title='Total funds in escrow' icon={faDatabase}
-              text={(node.fundsInEscrow / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)}/>
+        <Card title='# of peers' text={node.numberOfPeers}
+              style={{gridArea: 'peers', backgroundImage: 'url(../images/peers.svg)'}}/>
+        <Card title='# of blocks' text={node.numberOfBlocks}
+              style={{gridArea: 'blocks', backgroundImage: 'url(../images/blocks.svg)'}}/>
+        <Card title='# of transactions' text={node.numberOfTransactions}
+              style={{gridArea: 'transactions', backgroundImage: 'url(../images/transactions.svg)'}}/>
+        <Card title='# of UTXOs' text={node.numberOfUTXOs}
+              style={{gridArea: 'utxo', backgroundImage: 'url(../images/utxo.svg)'}}/>
+        <Card title='transaction rate(tps)' text={node.transactionRate}
+              style={{gridArea: 'rate', backgroundImage: 'url(../images/rate.svg)'}}/>
+        <Card title='last timestamp' text={this._parseDate(node.lastTimestamp)} className={style.Timestamp}
+              style={{gridArea: 'last', backgroundImage: 'url(../images/timestamp.svg)'}}/>
+        <Card title='My funds in escrow' className={style.Funds}
+              text={(node.myFundsInEscrow / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)}
+              style={{gridArea: 'funds', backgroundImage: 'url(../images/wallet.svg)'}}/>
+        <Card title='Total funds in escrow' className={style.Funds}
+              text={(node.fundsInEscrow / POWER_DIVISIBILITY).toFixed(EMTQ_DIVISIBILITY)}
+              style={{gridArea: 'total', backgroundImage: 'url(../images/total.svg)'}}/>
       </div>
     );
   };
@@ -123,18 +127,28 @@ class Node extends Component {
   _renderStake = () => (
     <div className={style.Tab}>
       <h2>Stake (send EMTQ to escrow)</h2>
-      <p>
-        In order to participate in Emotiq Proof of Stake consensus protocol and collect transactions fees, a node should
-        keep non zero amount of EMTQ in the escrow. More yuo keep in the escrow, more chances you have to win the leader
-        lottery.
-      </p>
+      <div className={style.Paragraph}>
+        <img src={'../images/!.svg'}/>
+        <p>
+          In order to participate in Emotiq Proof of Stake consensus protocol and collect transactions fees, a node
+          should
+          keep non zero amount of EMTQ in the escrow. More yuo keep in the escrow, more chances you have to win the
+          leader
+          lottery.
+        </p>
+      </div>
       <h3>Amount</h3>
-      <input type='number' min={0} step={Math.pow(0.1, EMTQ_DIVISIBILITY)} value={this.state.stakeAmount}
-             onChange={(e) => this.setState({stakeAmount: e.target.value}, this._checkCanStake)}/>
+      <div className={style.Input}>
+        <input type='number' min={0} step={Math.pow(0.1, EMTQ_DIVISIBILITY)} value={this.state.stakeAmount}
+               onChange={(e) => this.setState({stakeAmount: e.target.value}, this._checkCanStake)}/>
+        {this.state.canStake ? <img src={'../images/check-green.svg'}/> : null}
+      </div>
       <div className={style.ButtonPanel}>
         <div className={style.ButtonWrapper}>
           <button className={style.Button} onClick={() => this.setState({confirmStakeModalIsOpen: true})}
-                  disabled={!this.state.canStake}>Next
+                  disabled={!this.state.canStake}>
+            <span>Next</span>
+            <img src={'../images/arrow-next.svg'}/>
           </button>
         </div>
       </div>
@@ -144,17 +158,25 @@ class Node extends Component {
   _renderUnstake = () => (
     <div className={style.Tab}>
       <h2>UnStake (withdraw EMTQ from escrow)</h2>
-      <p>
-        If the amount of your founds in escrow will become zero you will not be able to participate in the leader
-        lottery and will not be able to collect transaction fees.
-      </p>
+      <div className={style.Paragraph}>
+        <img src={'../images/!.svg'}/>
+        <p>
+          If the amount of your founds in escrow will become zero you will not be able to participate in the leader
+          lottery and will not be able to collect transaction fees.
+        </p>
+      </div>
       <h3>Amount</h3>
-      <input type='number' min={0} step={Math.pow(0.1, EMTQ_DIVISIBILITY)} value={this.state.unstakeAmount}
-             onChange={(e) => this.setState({unstakeAmount: e.target.value}, this._checkCanUnstake)}/>
+      <div className={style.Input}>
+        <input type='number' min={0} step={Math.pow(0.1, EMTQ_DIVISIBILITY)} value={this.state.unstakeAmount}
+               onChange={(e) => this.setState({unstakeAmount: e.target.value}, this._checkCanUnstake)}/>
+        {this.state.canUnstake ? <img src={'../images/check-green.svg'}/> : null}
+      </div>
       <div className={style.ButtonPanel}>
         <div className={style.ButtonWrapper}>
           <button className={style.Button} onClick={() => this.setState({confirmUnstakeModalIsOpen: true})}
-                  disabled={!this.state.canUnstake}>Next
+                  disabled={!this.state.canUnstake}>
+            <span>Next</span>
+            <img src={'../images/arrow-next.svg'}/>
           </button>
         </div>
       </div>
@@ -164,23 +186,27 @@ class Node extends Component {
   _renderStakeModal = () => {
     const {stakeAmount} = this.state;
     return (
-      <div className={style.Modal} onClick={() => this.setState({confirmStakeModalIsOpen: false})}>
-        <div className={style.ModalContent} onClick={(event) => event.stopPropagation()}>
-          <h2>Confirm Stake Transaction</h2>
-          <p>Amount</p>
-          <p className={style.Red}>{stakeAmount} EMTQ</p>
-          <p>Total funds in escrow after transaction</p>
-          <p
-            className={style.Red}>{(this.props.node.fundsInEscrow / POWER_DIVISIBILITY + (+stakeAmount)).toFixed(EMTQ_DIVISIBILITY)} EMTQ
-          </p>
-          <div className={style.ButtonPanel}>
-            <div className={style.ButtonWrapper}>
-              <button className={style.Button} onClick={() => this.setState({confirmStakeModalIsOpen: false})}>Cancel
-              </button>
-            </div>
-            <div className={style.ButtonWrapper}>
-              <button className={style.Button} onClick={this._stake}>Send</button>
-            </div>
+      <div className={style.Tab}>
+        <h2>Confirm Stake Transaction</h2>
+        <div className={style.UnstakeModal}>
+          <div>
+            <h3>Amount</h3>
+            <span>{stakeAmount} EMTQ</span>
+          </div>
+          <div>
+            <h3>Total funds in escrow after transaction</h3>
+            <span className={style.Red}>
+            {(this.props.node.fundsInEscrow / POWER_DIVISIBILITY + (+stakeAmount)).toFixed(EMTQ_DIVISIBILITY)} EMTQ
+          </span>
+          </div>
+        </div>
+        <div className={style.ButtonPanel}>
+          <div className={style.ButtonWrapper}>
+            <button className={style.Button} onClick={() => this.setState({confirmStakeModalIsOpen: false})}>Cancel
+            </button>
+          </div>
+          <div className={style.ButtonWrapper}>
+            <button className={style.Button} onClick={this._stake}>Send</button>
           </div>
         </div>
       </div>
@@ -190,23 +216,29 @@ class Node extends Component {
   _renderUnstakeModal = () => {
     const {unstakeAmount} = this.state;
     return (
-      <div className={style.Modal} onClick={() => this.setState({confirmUnstakeModalIsOpen: false})}>
-        <div className={style.ModalContent} onClick={(event) => event.stopPropagation()}>
-          <h2>Confirm UnStake Transaction</h2>
-          <p>Amount</p>
-          <p className={style.Red}>{unstakeAmount} EMTQ</p>
-          <p>Total funds in escrow after transaction</p>
-          <p
-            className={style.Red}>{(this.props.node.fundsInEscrow / POWER_DIVISIBILITY - (+unstakeAmount)).toFixed(EMTQ_DIVISIBILITY)} EMTQ
-          </p>
-          <div className={style.ButtonPanel}>
-            <div className={style.ButtonWrapper}>
-              <button className={style.Button} onClick={() => this.setState({confirmUnstakeModalIsOpen: false})}>Cancel
-              </button>
-            </div>
-            <div className={style.ButtonWrapper}>
-              <button className={style.Button} onClick={this._unstake}>Withdraw</button>
-            </div>
+      <div className={style.Tab}>
+        <h2>Confirm UnStake Transaction</h2>
+        <div className={style.UnstakeModal}>
+          <div>
+            <h3>Amount</h3>
+            <span>{unstakeAmount} EMTQ</span>
+          </div>
+          <div>
+            <h3>Total funds in escrow after transaction</h3>
+            <span className={style.Red}>
+            {(this.props.node.fundsInEscrow / POWER_DIVISIBILITY - (+unstakeAmount)).toFixed(EMTQ_DIVISIBILITY)} EMTQ
+          </span>
+          </div>
+        </div>
+
+
+        <div className={style.ButtonPanel}>
+          <div className={style.ButtonWrapper}>
+            <button className={style.Button} onClick={() => this.setState({confirmUnstakeModalIsOpen: false})}>Cancel
+            </button>
+          </div>
+          <div className={style.ButtonWrapper}>
+            <button className={style.Button} onClick={this._unstake}>Withdraw</button>
           </div>
         </div>
       </div>
@@ -226,10 +258,9 @@ class Node extends Component {
 
 class Card extends Component {
   render = () => (
-    <div className={style.Card}>
+    <div className={cx(style.Card, this.props.className)} style={this.props.style}>
       <p>{this.props.title || ''}</p>
       <div>
-        {!!this.props.icon && <FAIcon icon={this.props.icon} size='3x'/>}
         <span>{this.props.text}</span>
       </div>
     </div>

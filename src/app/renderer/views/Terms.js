@@ -19,6 +19,7 @@ class Terms extends Component {
 
   render = () =>
     <div className={style.Terms}>
+      <img src={'../images/logo.svg'} className={style.Logo}/>
       <div className={style.Container}>
         <h1 className={style.Caption}>Terms of Service Agreement</h1>
         <div className={style.Scroll}>
@@ -99,12 +100,17 @@ class Terms extends Component {
             deserunt mollit anim id est laborum.</p>
         </div>
         <div className={style.Confirm}>
-          <input type='checkbox' value={this.state.isAgree}
+          <input id="isAgree" type='checkbox' value={this.state.isAgree} className={style.CheckboxInput}
                  onClick={(e) => this.setState({isAgree: e.target.checked})}/>
-          <span>I agree with terms of use</span>
+          <div className={style.Checkbox}
+               style={{background: this.state.isAgree ? 'rgba(0, 0, 0, 0.2) url("../images/check.svg") center center no-repeat' : ''}}/>
+          <label for="isAgree">I agree with terms of use</label>
         </div>
         <div className={style.ButtonWrapper}>
-          <button onClick={this._acceptTerms} disabled={!this.state.isAgree}>Next</button>
+          <button className={style.AcceptButton} onClick={this._acceptTerms} disabled={!this.state.isAgree}>
+            <span>Next</span>
+            <img src={'../images/arrow-next.svg'}/>
+          </button>
         </div>
       </div>
     </div>;
