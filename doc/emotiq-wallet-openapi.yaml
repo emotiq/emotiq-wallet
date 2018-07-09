@@ -1,16 +1,17 @@
 openapi:  3.0.1
+$id:   "http://api.emotiq.ch/wallet/emotiq-wallet-openapi.yaml"
 info:
   title: Emotiq Wallet interface
-  version: 0.0.3
+  version: 0.1.0
 tags:
   - name: consensus
   - name: wallet
   - name: transaction
   - name: dictionary
+  - name: support
 paths:
 # MUST implement  
   /consensus/:
-    
     get:
       summary: >-
         Returns information about current chain consensus with the connected
@@ -23,7 +24,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/consensus'
+                $ref: 'responses.yaml#/schemas/consensus/'
 # MUST implement:  default wallet is 'My Wallet', but it may be changed
   /wallet/:
     get:
@@ -69,7 +70,6 @@ paths:
   /wallet/{name}:
     tags:
       - wallet
-# MUST implement          
     get:
       description: Summarize information about a wallet
       parameters:
@@ -84,12 +84,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  amount:
-                    description:
-                      The total balance of coin in the wallet
-                    type: integer
+                $ref: 'messages.yaml#/schemas/wallet/default/response'
     delete:
       summary: Delete wallet
       parameters:
@@ -184,7 +179,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: object
                 properties:
                   totalTransactions:
                     type: integer
@@ -218,6 +213,24 @@ paths:
                 $ref: '#/components/schemas/transaction'
         '404':
           description: No such transaction
+  '/wallet/{name}/transaction/':
+      get:
+        tags:
+          - wallet
+        parameters:
+          - name: name
+            in: path
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Information about all transactions for wallet
+            content:
+              application/json:
+                schema:
+                  type: array
+                    items:
+                      $ref: '#/components/schemas/transaction'
   '/wallet/{name}/address':
     post:
       tags:
@@ -292,6 +305,34 @@ paths:
                   - UNUSED
               amount:
                 type: integer
+  '/wallet/{name}/address/all':
+      get:
+        tags:
+          - wallet
+        summary: Get information about all addresses associated with a wallet
+        parameters:
+          - name: name
+            description: Name of wallet
+            in: path
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Array of addreses with information
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  status:
+                    description: Whether this address has ever been used in the blockchain
+                    type: string
+                    enum:
+                      - USED
+                      - UNUSED
+                  amount:
+                    type: number
+                    format: double
   '/wallet/{name}/address/{address}/transaction':
     post:
       tags:
@@ -387,47 +428,29 @@ paths:
               type: array
               items:
                 type: string
-components:
-  schemas:
-    consensus:
-      type: object
-      properties:
-        epoch:
-          description: The number of the last sealed block (aka the current chain height)
-          type: integer
-        latestLocalEpoch:
-          description: The highest number of locally synchronized contiguous blocks
-          type: integer
-        synced:
-          description: Whether the connected node is synced with the chain
-          type: boolean
-    transaction:
-      type: object
-      properties:
-        id:
-          type: string
-        timestamp:
-          type: integer
-          format: int64
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              cloaked:
-                type: boolean
-              address:
-                type: string
-              amount:
-                type: integer
-        outputs:
-          type: array
-          items:
-            type: object
-            properties:
-              cloaked:
-                type: boolean
-              address:
-                type: string
-              amount:
-                type: integer
+# Is this still necessary?                
+  '/support':
+    post:
+      summary: Support request
+      tags:
+        - support
+      requestBody:
+        description: Request content
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+                properties:
+                  email:
+                    type: string
+                  subject:
+                    type: string
+                  problem:
+                    type: string
+                  logs:
+                    type: boolean
+                    description: does the user want to attach logs
+      responses:
+        '204':
+          description: Success
