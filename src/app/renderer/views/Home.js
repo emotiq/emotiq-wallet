@@ -7,11 +7,9 @@ import {faArrowAltCircleRight, faChartPie, faCopy, faPencilAlt, faReply} from '@
 import cx from 'classnames';
 import QRCode from 'qrcode.react';
 import _ from 'lodash';
-import {EMTQ_DIVISIBILITY, FEE} from '../../shared/constants/config';
+import {EMTQ_DIVISIBILITY, FEE, POWER_DIVISIBILITY} from '../../shared/constants/config';
 
 import style from './Home.css';
-
-const POWER_DIVISIBILITY = Math.pow(10, EMTQ_DIVISIBILITY);
 
 class Home extends Component {
 

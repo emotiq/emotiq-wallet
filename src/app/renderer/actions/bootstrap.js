@@ -3,6 +3,7 @@ import * as ws from '../../shared/ws/client';
 
 import db from '../db/index';
 import {SettingsSchema} from '../db/schema';
+import {SET_STATUS} from '../../shared/constants/node';
 
 const acceptTerms = () => {
   let isTermsAccepted = db.objects(SettingsSchema.name).filtered('name = "isTermsAccepted"')[0];
@@ -24,6 +25,11 @@ const syncNode = () => dispatch => {
                 status: data.synchronized ? STATUS.SYNCED : STATUS.SYNCING,
                 blocks: data.epoch,
                 currentBlock: data.localEpoch,
+              }
+            });
+            dispatch({
+              type: SET_STATUS, payload: {
+                numberOfBlocks: data.epoch,
               }
             });
           },

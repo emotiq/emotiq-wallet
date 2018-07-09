@@ -1,3 +1,152 @@
-.Node {
+:root {
+    --header-height: 115px;
+    --separator-width: 1px;
+    --menu-height: 60px;
+}
+
+.MainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.MainContainer > * {
+    flex: 1 100%;
+}
+
+.Header {
+    position: relative;
     text-align: center;
+    height: var(--header-height);
+}
+
+.TabsMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-top: 1px solid black;
+    border-bottom: var(--separator-width) solid black;
+    height: var(--menu-height);
+}
+
+.TabsMenu > * {
+    margin: 10px;
+    padding: 10px;
+    cursor: default;
+}
+
+.TabsMenu :hover {
+    background-color: lightgray;
+}
+
+.Tab {
+    background-color: darkgrey;
+    margin: 10px;
+    padding: 5px 10px;
+}
+
+.Tab > input {
+    border: 1px solid black;
+    width: 100%;
+    padding: 3px;
+}
+
+.Content {
+    position: relative;
+    height: calc(100vh - var(--header-height) - 2 * var(--separator-width) - var(--menu-height));
+    overflow-y: auto;
+}
+
+.UpArrow {
+    transform: rotate(270deg) scaleX(-1);
+}
+
+.DownArrow {
+    transform: rotate(90deg) scaleX(-1);
+}
+
+.Arrow {
+    margin: 5px;
+}
+
+.ButtonWrapper {
+    text-align: center;
+    margin: 10px 35px;
+}
+
+.Button {
+    padding: 5px 25px;
+    font-size: 15px;
+}
+
+.ButtonPanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.Active {
+    background-color: lightgray;
+}
+
+.Cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.Card {
+    background-color: darkgrey;
+    margin: 20px;
+    padding: 5px 20px;
+    width: 150px;
+    height: 100px;
+}
+
+.Card p {
+    text-align: right;
+}
+
+.Card div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.Address {
+    font-size: 14px;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+.Modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.ModalContent {
+    position: relative;
+    top: 50%;
+    margin: auto;
+    transform: translateY(-50%);
+    background-color: dimgray;
+    opacity: 1;
+    max-width: 400px;
+    padding: 10px 30px;
+    min-height: 200px;
+    color: white;
+}
+
+.Red {
+    color: darkred;
 }

@@ -9,7 +9,7 @@ download_node_linux()
 (cd /tmp && \
     curl -L $SOURCE$FILE_NAME_LINUX.tar.bz2 | tar xvjf -
     cd -
-    cp /tmp/$FILE_NAME_LINUX/emotiq .
+    cp -a /tmp/$FILE_NAME_LINUX/. .
   )
 }
 
@@ -18,7 +18,7 @@ download_node_macos()
 (cd /tmp && \
     curl -L $SOURCE$FILE_NAME_MACOS.tar.bz2 | tar xvjf -
     cd -
-    cp /tmp/$FILE_NAME_MACOS/emotiq .
+    cp -a /tmp/$FILE_NAME_MACOS/. .
   )
 }
 
