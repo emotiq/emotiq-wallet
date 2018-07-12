@@ -1,20 +1,6 @@
-* Validate OpenAPI
-** Installation
-#+BEGIN_EXAMPLE
-node install js-yaml 
-node install openapi-schema-validation
-#+END_EXAMPLE
-** Convert to JSON
+* Websocket network interface descriptions
 
-#+BEGIN_EXAMPLE bash 
-node_modules/js-yaml/bin/js-yaml.js emotiq-wallet-openapi.yaml > schema.json
-#+END_EXAMPLE
+Models of network traffic Websocket / REST
 
-** Validate wrt. OpenAPI schema
+Moved to <https://github.com/emotiq/emotiq/tree/dev/src/model>. 
 
-<https://www.npmjs.com/package/openapi-schema-validation>
-
-#+BEGIN_EXAMPLE
-var validateSchema = require('openapi-schema-validation').validate;
-console.log(validateSchema(require('./schema.json'), 'openapi-3.0.0');
-#+END_EXAMPLE
