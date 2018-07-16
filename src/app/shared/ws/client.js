@@ -28,7 +28,7 @@ function onMessage(evt) {
   let data = JSON.parse(evt.data);
   let id = data.id;
   console.log(evt.data);
-  if (id !== null) {
+  if (id !== undefined) {
     if (messages[id]) {
       data.result ?
         messages[id].next(data.result) && messages[id].complete() :
