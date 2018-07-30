@@ -4,3 +4,4 @@ Models of network traffic Websocket / REST
 
 Moved to <https://github.com/emotiq/emotiq/tree/dev/src/model>. 
 
+*<2018-07-10 Tue 15:31>w
