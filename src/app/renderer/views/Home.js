@@ -1,11 +1,11 @@
+import cx from 'classnames';
+import {clipboard} from 'electron';
+import _ from 'lodash';
+import QRCode from 'qrcode.react';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {clipboard} from 'electron';
-import {getWallet, renameWallet, sendEMTQ} from '../actions/wallet';
-import cx from 'classnames';
-import QRCode from 'qrcode.react';
-import _ from 'lodash';
 import {EMTQ_DIVISIBILITY, FEE, POWER_DIVISIBILITY} from '../../shared/constants/config';
+import {getWallet, renameWallet, sendEMTQ} from '../actions/wallet';
 
 import style from './Home.css';
 
@@ -67,12 +67,15 @@ class Home extends Component {
   };
 
   _sendEMTQ = () => {
-    this.props.sendEMTQ(this.state.sendAddress, this.state.sendAmount * POWER_DIVISIBILITY)
+    this.props.sendEMTQ(this.state.sendAddress, this.state.sendAmount * POWER_DIVISIBILITY, this.props.wallet.activeWallet)
       .then(() => {
         this.setState({confirmSendModalIsOpen: false, sendAddress: '', sendAmount: 0, isValidSend: false});
         alert('Transaction has been created');
       })
-      .catch((mes) => alert(mes));
+      .catch((mes) => {
+        console.log(mes);
+        alert('Transaction was not sent');
+      });
   };
 
   _onKeyPressWalletName = (e) => {
@@ -209,12 +212,6 @@ class Home extends Component {
             <span
               className={style.NumberOfTransactionsLabel}>{!!activeWallet.transactions ? activeWallet.transactions.length : 0}</span>
           </span>
-          <div className={style.DateFilter}>
-            <span>From </span>
-            <input value="Dec 08. 2017"/>
-            <span>To </span>
-            <input value="Dec 08. 2017"/>
-          </div>
           <div className={style.StatusFilter}>
             <span className={style.StatusSelected}>all</span>
             <span>received</span>
@@ -474,7 +471,7 @@ export default connect(state => ({
   wallet: state.wallet
 }), dispatch => ({
   renameWallet: (name) => dispatch(renameWallet(name)),
-  getWallet: () => dispatch(getWallet()),
-  sendEMTQ: (address, amount) => dispatch(sendEMTQ(address, amount))
-    .catch((mes) => alert(mes)),
+  getWallet: () => dispatch(getWallet())
+    .catch(console.log),
+  sendEMTQ: (address, amount, wallet) => dispatch(sendEMTQ(address, amount, wallet)),
 }))(Home);

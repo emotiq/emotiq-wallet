@@ -1,4 +1,4 @@
-const schemaVersion = 8;
+const schemaVersion = 9;
 
 const AccountSchema = {
   name: 'Account',
@@ -11,34 +11,8 @@ const AccountSchema = {
       password: 'string?',
       isRecoveryPhraseWrittenDown: 'bool',
       recoveryPhrase: 'string?',
-      transactions: 'Transaction[]',
       addresses: 'Address[]',
     },
-};
-
-const TransactionSchema = {
-  name: 'Transaction',
-  primaryKey: 'id',
-  properties:
-    {
-      id: 'string',
-      timestamp: 'int',
-      direction: 'string',
-      block: 'string',
-      fee: 'int',
-      type: 'string',
-      inputs: 'TransactionAsset[]',
-      outputs: 'TransactionAsset[]',
-    }
-};
-
-const TransactionAssetSchema = {
-  name: 'TransactionAsset',
-  properties:
-    {
-      address: 'string',
-      amount: 'int',
-    }
 };
 
 const AddressSchema = {
@@ -99,6 +73,11 @@ const migrations = [
         a.addresses = [];
       });
     }
+  },
+  {
+    version: 8,
+    migration: (or, nr) => {
+    }
   }
 ];
 
@@ -107,8 +86,6 @@ export {
   schemaVersion,
 
   AccountSchema,
-  TransactionSchema,
-  TransactionAssetSchema,
   AddressSchema,
   SettingsSchema,
 

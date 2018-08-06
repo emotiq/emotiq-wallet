@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-SOURCE="https://github.com/emotiq/emotiq/releases/download/test-0.15-websockets/"
-FILE_NAME_LINUX="emotiq-20180614122230-b5a8beb-linux"
-FILE_NAME_MACOS="emotiq-20180614052219-b5a8beb-macos"
+SOURCE="https://github.com/emotiq/emotiq/releases/download/mvp-0.1.2/"
+FILE_NAME_LINUX="emotiq-20180802110735-1138e3c-linux"
+FILE_NAME_MACOS="emotiq-20180802040702-1138e3c1-macos"
 
 download_node_linux()
 {

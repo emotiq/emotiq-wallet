@@ -22,7 +22,7 @@ const Realm = window.require('realm');
 Realm.defaultPath = dir + '/emotiq-wallet.realm';
 
 const schema = {
-  schema: [AccountSchema, AddressSchema, SettingsSchema, TransactionSchema, TransactionAssetSchema],
+  schema: [AccountSchema, AddressSchema, SettingsSchema],
   schemaVersion,
   migration: function (oldRealm, newRealm) {
     migrations.forEach((ma) => {

@@ -1,4 +1,5 @@
 import {handleActions} from 'redux-actions';
+import {STAKE, UNSTAKE} from '../../shared/constants/node';
 import {
   ADD_TRANSACTION,
   DELETE_WALLET,
@@ -14,7 +15,6 @@ import {
 
 import db from '../db/index';
 import {AccountSchema} from '../db/schema';
-import {STAKE, UNSTAKE} from '../../shared/constants/node';
 
 function getInitialState() {
   let wallet = db.objects(AccountSchema.name)[0];
@@ -25,11 +25,6 @@ function getInitialState() {
   }
   let activeWallet = JSON.parse(JSON.stringify(wallet));
   activeWallet.addresses = Object.values(activeWallet.addresses);
-  activeWallet.transactions = Object.values(activeWallet.transactions);
-  activeWallet.transactions.forEach(t => {
-    t.inputs = Object.values(t.inputs);
-    t.outputs = Object.values(t.outputs);
-  });
   return {
     activeWallet: activeWallet,
   };

@@ -10,6 +10,10 @@ yarn
 
 * Run in dev mode
 
+```download node
+./ci/download-node.sh
+```
+
 ```bash
 yarn dev
 ``` 

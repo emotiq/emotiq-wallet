@@ -12,9 +12,7 @@ export function connect() {
     console.log(evt);
   };
   ws.onmessage = onMessage;
-  ws.onclose = function (evt) {
-    console.log(evt);
-  };
+  ws.onclose = onClose;
   ws.onerror = function (evt) {
     console.log(evt);
   };
@@ -27,17 +25,28 @@ export function connect() {
 function onMessage(evt) {
   let data = JSON.parse(evt.data);
   let id = data.id;
-  console.log(evt.data);
-  if (id !== null) {
+  if (id !== undefined) {
+    console.log(evt.data);
     if (messages[id]) {
       data.result ?
-        messages[id].next(data.result) && messages[id].complete() :
-        messages[id].error(data.error.message);
+        messages[id].resolve(data.result) :
+        messages[id].reject(data.error.message);
+      messages[id] = null;
     }
 
   } else {
     subscribers.filter(l => l.channel === data.method).forEach(s => s.observer.next(data.params));
   }
+}
+
+function onClose(evt) {
+  console.log(evt);
+  for (let id in messages) {
+    if (messages[id] !== null) {
+      messages[id].reject(evt.reason);
+    }
+  }
+  connect();
 }
 
 function prepareRequest(method, params) {
@@ -50,13 +59,14 @@ function prepareRequest(method, params) {
 }
 
 function send(mes) {
-  let resp = rx.Observable.create((observer) => {
-    messages[mes.id] = observer;
+  console.log(mes);
+  let promise = new Promise((res, rej) => {
+    messages[mes.id] = {resolve: res, reject: rej};
   });
   waitForConnection(() => {
     return WS.send(JSON.stringify(mes));
   }, 1000);
-  return resp;
+  return promise;
 }
 
 function subscribe(channel) {
@@ -65,12 +75,11 @@ function subscribe(channel) {
     obs = observer;
   });
   send(prepareRequest('subscribe', [channel]))
-    .subscribe(
-      (data) => {
-        !!data ? subscribers.push({channel: 'consensus', observer: obs}) :
-          obs.error(data.message);
-      },
-      (error) => {
+    .then(data => {
+      !!data ? subscribers.push({channel: 'consensus', observer: obs}) :
+        obs.error(data.message);
+    })
+    .catch((error) => {
         obs.error(error);
       }
     );
@@ -95,6 +104,14 @@ export function getWallet() {
 
 export function getTransactions() {
   return send(prepareRequest('transactions'));
+}
+
+export function getTransaction(transaction) {
+  return send(prepareRequest('get-transaction'));
+}
+
+export function submitTransaction(transaction) {
+  return send(prepareRequest('submit-transaction', transaction));
 }
 
 function waitForConnection(callback, interval) {

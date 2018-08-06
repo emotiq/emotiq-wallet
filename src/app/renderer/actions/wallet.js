@@ -1,19 +1,12 @@
-import {
-  ADD_TRANSACTION,
-  RENAME_WALLET,
-  SET_AMOUNT,
-  SET_PASSWORD,
-  SET_WALLET,
-  WRITE_DOWN_RECOVERY_PHRASE
-} from '../../shared/constants/wallet';
+import hex from 'crypto-js/enc-hex';
+
+import sha256 from 'crypto-js/sha256';
 import {RECOVERY_PHRASE_LENGTH} from '../../shared/constants/config';
+import {RENAME_WALLET, SET_PASSWORD, SET_WALLET, WRITE_DOWN_RECOVERY_PHRASE} from '../../shared/constants/wallet';
+import * as ws from '../../shared/ws/client';
 
 import db from '../db/index';
 import {AccountSchema} from '../db/schema';
-import * as ws from '../../shared/ws/client';
-
-import sha256 from 'crypto-js/sha256';
-import hex from 'crypto-js/enc-hex';
 
 const setPassword = (pass, confirmPass) => dispatch => {
   if (pass !== confirmPass) {
@@ -62,45 +55,46 @@ const writeDownRecoveryPhrase = (controlPhrase) => dispatch => {
 };
 
 const getWallet = () => dispatch => {
-  let wallet = [];
+  let wallet = {};
+  return _getWallet()
+    .then(wal => wallet = wal)
+    .then(_getTransactions)
+    .then(transactions => wallet.transactions = transactions)
+    .then(ws.getRecoveryPhrase)
+    .then(data => wallet.recoveryPhrase = data.keyphrase.join(' '))
+    .then(() => {
+      wallet.addresses = [{address: wallet.address, used: false}];//websocket is not ready yet
+      db.write(() => {
+        db.create(AccountSchema.name, wallet, true);
+      });
+      dispatch({
+        type: SET_WALLET, payload: wallet,
+      });
+    });
+};
+
+const _getWallet = () =>
   ws.getWallet()
-    .subscribe((data) => {
+    .then(data => {
       let dbWallet = db.objects(AccountSchema.name).filtered('address = "' + data.address + '"')[0];
-      wallet = {
+      let wallet = {
         name: !!dbWallet && !!dbWallet.name ? dbWallet.name : 'My Wallet',//websocket is not ready yet
         address: data.address,
         amount: data.amount,
         isRecoveryPhraseWrittenDown: !!dbWallet && !!dbWallet.isRecoveryPhraseWrittenDown,
       };
       !!dbWallet && !!dbWallet.password && (wallet.password = dbWallet.password);
-      ws.getTransactions()
-        .subscribe((data) => {
-          wallet.transactions = data;
-          wallet.transactions.forEach(t => {
-            t.direction = 'OUT';//websocket is not ready yet
-            t.block = '0000000000000xf58a0xf523119cda01d2a5561c689968ec5a219096158a';//websocket is not ready yet
-          });
-        });
-      wallet.addresses = getAddresses();//websocket is not ready yet
-      ws.getRecoveryPhrase()
-        .subscribe(data => {
-          wallet.recoveryPhrase = data.keyphrase.join(' ');
-        });
-      let checkTimer = setInterval(() => {
-        if (!!wallet.transactions && !!wallet.addresses && !!wallet.recoveryPhrase) {
-          wallet.amount += 200;
-          db.write(() => {
-            db.create(AccountSchema.name, wallet, true);
-          });
-          dispatch({
-            type: SET_WALLET, payload: wallet,
-          });
-          clearInterval(checkTimer);
-        }
-      }, 100);
+      return wallet;
     });
-  return Promise.resolve();
-};
+
+const _getTransactions = () =>
+  ws.getTransactions()
+    .then(data =>
+      data.map(t => ({
+        ...t,
+        direction: t.type === 'spend' ? 'OUT' : 'IN',
+        block: '0000000000000xf58a0xf523119cda01d2a5561c689968ec5a219096158a',//websocket is not ready yet
+      })));
 
 const restoreWallet = (recoveryPhrase) => dispatch => {
   if (!recoveryPhrase || recoveryPhrase.length < RECOVERY_PHRASE_LENGTH) {
@@ -117,7 +111,6 @@ const restoreWallet = (recoveryPhrase) => dispatch => {
   dispatch(getWallet())
     .then((data) => res(data))
     .catch((e) => rej(e));
-
   return promise;
 };
 
@@ -130,42 +123,13 @@ const renameWallet = (name) => dispatch => {
   return Promise.resolve();
 };
 
-const getAddresses = () => {
-  return [
-    {address: '0x7292c5521bb29e5a976bbaab40e3fae3f87810430x7292c5521bb29e5a976bbaab40e3fae3f8781043', used: true},
-    {address: '0xfe829a79d43c4b1b6e0b85979f60825a568c02af0xfe829a79d43c4b1b6e0b85979f60825a568c02af', used: true},
-    {address: '0x04347c3933259c967e4597a869577c9d1e53eded0x04347c3933259c967e4597a869577c9d1e53eded', used: true},
-    {address: '0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be', used: true},
-    {address: '0x99d188d71f432ca4e769fd4a13f5446b091ba7450x99d188d71f432ca4e769fd4a13f5446b091ba745', used: true},
-    {address: '0xf523119cda01d2a5561c689968ec5a219096158a0xf523119cda01d2a5561c689968ec5a219096158a', used: false}];
-};
-
-const sendEMTQ = (address, amount) => dispatch => {
-  let wallet = db.objects(AccountSchema.name)[0];
-  let symbols = '1234567890qwertyuiopasdfghjklzxcvbnm'.split('');
-  if (wallet !== undefined) {
-    let transaction = {
-      id: Array.apply(null, {length: 130}).map(() => symbols[Math.floor(Math.random() * symbols.length)]).join(''),
-      timestamp: Date.now() / 1000,
-      direction: 'OUT',
-      amount: +amount,
-      block: '0000000000000xf58a0xf523119cda01d2a5561c689968ec5a219096158a',
-      fee: Math.ceil(amount * 0.01),
-      type: 'EMTQ Spend transaction',
-      inputs: [{address: wallet.address, amount: amount - 1}, {address: wallet.address + '123', amount: 1}],
-      outputs: [{address: address, amount: amount}],
-    };
-
-    db.write(() => {
-      wallet.amount -= amount + Math.ceil(amount * 0.01);
-      wallet.transactions.push(transaction);
-    });
-
-    dispatch({type: SET_AMOUNT, payload: wallet.amount});
-    dispatch({type: ADD_TRANSACTION, payload: transaction});
-  }
-  return Promise.resolve();
-};
+const sendEMTQ = (address, amount, wal) => dispatch =>
+  ws.submitTransaction({
+    transaction: {address: address, amount: amount},
+    name: wal.name,
+    address: wal.address
+  })
+    .then(() => dispatch(getWallet()));
 
 export {
   setPassword,
