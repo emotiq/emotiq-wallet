@@ -2,7 +2,14 @@ import hex from 'crypto-js/enc-hex';
 
 import sha256 from 'crypto-js/sha256';
 import {RECOVERY_PHRASE_LENGTH} from '../../shared/constants/config';
-import {RENAME_WALLET, SET_PASSWORD, SET_WALLET, WRITE_DOWN_RECOVERY_PHRASE} from '../../shared/constants/wallet';
+import {
+  ADD_TRANSACTION,
+  RENAME_WALLET,
+  SET_PASSWORD,
+  SET_WALLET,
+  UPDATE_WALLET_INFO,
+  WRITE_DOWN_RECOVERY_PHRASE
+} from '../../shared/constants/wallet';
 import * as ws from '../../shared/ws/client';
 
 import db from '../db/index';
@@ -58,13 +65,14 @@ const getWallet = () => dispatch => {
   let wallet = {};
   return _getWallet()
     .then(wal => wallet = wal)
-    .then(_getTransactions)
+    .then(() => _getTransactions(wallet.address))
     .then(transactions => wallet.transactions = transactions)
     .then(ws.getRecoveryPhrase)
     .then(data => wallet.recoveryPhrase = data.keyphrase.join(' '))
     .then(() => {
       wallet.addresses = [{address: wallet.address, used: false}];//websocket is not ready yet
       db.write(() => {
+        db.delete(db.objects(AccountSchema.name));//for now only one wallet can be
         db.create(AccountSchema.name, wallet, true);
       });
       dispatch({
@@ -87,14 +95,15 @@ const _getWallet = () =>
       return wallet;
     });
 
-const _getTransactions = () =>
+const _getTransactions = (walletAddress) =>
   ws.getTransactions()
     .then(data =>
-      data.map(t => ({
-        ...t,
-        direction: t.type === 'spend' ? 'OUT' : 'IN',
-        block: '0000000000000xf58a0xf523119cda01d2a5561c689968ec5a219096158a',//websocket is not ready yet
-      })));
+      data.map(t => _updateDirection(t, walletAddress)));
+
+const _updateDirection = (transaction, walletAddress) => ({
+  ...transaction,
+  direction: transaction.inputs.filter(i => i.address === walletAddress).length > 0 ? 'IN' : 'OUT',
+});
 
 const restoreWallet = (recoveryPhrase) => dispatch => {
   if (!recoveryPhrase || recoveryPhrase.length < RECOVERY_PHRASE_LENGTH) {
@@ -123,13 +132,27 @@ const renameWallet = (name) => dispatch => {
   return Promise.resolve();
 };
 
+const _getWalletInfo = () => dispatch =>
+  ws.getWallet()
+    .then(data => {
+      let dbWallet = db.objects(AccountSchema.name).filtered('address = "' + data.address + '"')[0];
+      let wallet = {
+        name: !!dbWallet && !!dbWallet.name ? dbWallet.name : 'My Wallet',//websocket is not ready yet
+        address: data.address,
+        amount: data.amount,
+      };
+      dispatch({type: UPDATE_WALLET_INFO, payload: wallet});
+    });
+
 const sendEMTQ = (address, amount, wal) => dispatch =>
   ws.submitTransaction({
     transaction: {address: address, amount: amount},
     name: wal.name,
     address: wal.address
   })
-    .then(() => dispatch(getWallet()));
+    .then(tran => _updateDirection(tran, wal.address))
+    .then(transaction => dispatch({type: ADD_TRANSACTION, payload: transaction}))
+    .then(() => dispatch(_getWalletInfo()));
 
 export {
   setPassword,

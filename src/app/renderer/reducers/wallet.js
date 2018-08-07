@@ -10,6 +10,7 @@ import {
   SET_PASSWORD,
   SET_TRANSACTIONS,
   SET_WALLET,
+  UPDATE_WALLET_INFO,
   WRITE_DOWN_RECOVERY_PHRASE
 } from '../../shared/constants/wallet';
 
@@ -52,6 +53,13 @@ const setWallet = (state = initialWalletState, action) => {
   state.activeWallet = action.payload;
   return {
     ...state,
+  };
+};
+
+const updateWalletInfo = (state = initialWalletState, action) => {
+  return {
+    ...state,
+    activeWallet: {...state.activeWallet, ...action.payload}
   };
 };
 
@@ -129,6 +137,7 @@ export default handleActions({
   [SET_PASSWORD]: setPassword,
   [WRITE_DOWN_RECOVERY_PHRASE]: writeDownRecoveryPhrase,
   [SET_WALLET]: setWallet,
+  [UPDATE_WALLET_INFO]: updateWalletInfo,
   [RESTORE_WALLET]: restoreWallet,
   [DELETE_WALLET]: deleteWallet,
   [RENAME_WALLET]: renameWallet,

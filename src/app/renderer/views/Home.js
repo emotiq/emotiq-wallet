@@ -69,7 +69,13 @@ class Home extends Component {
   _sendEMTQ = () => {
     this.props.sendEMTQ(this.state.sendAddress, this.state.sendAmount * POWER_DIVISIBILITY, this.props.wallet.activeWallet)
       .then(() => {
-        this.setState({confirmSendModalIsOpen: false, sendAddress: '', sendAmount: 0, isValidSend: false});
+        this.setState({
+          confirmSendModalIsOpen: false,
+          sendAddress: '',
+          sendAmount: 0,
+          isValidSend: false,
+          activeTab: 'transactions'
+        });
         alert('Transaction has been created');
       })
       .catch((mes) => {
@@ -119,7 +125,7 @@ class Home extends Component {
   };
 
   _getTrimmedAddress = (address, leftPartlength = 10, rightPartLenght = 10) => {
-    return address.substr(0, leftPartlength) + '...' + address.slice(-rightPartLenght);
+    return address && address.substr(0, leftPartlength) + '...' + address.slice(-rightPartLenght);
   };
 
   render = () => {
@@ -278,7 +284,7 @@ class Home extends Component {
             <div
               className={cx(style.TransactionDetailsLabel, style.TransactionBlockLabel)}>Included&nbsp;in&nbsp;block:
             </div>
-            <div className={style.TransactionBlockRow}>{this._getTrimmedAddress(tran.block, 20, 15)}</div>
+            <div className={style.TransactionBlockRow}>{tran.epoch}</div>
 
             <div className={style.TransactionDateRow}>
               <span className={style.TransactionDetailsLabel}>Date and Time: </span>

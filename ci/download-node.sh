@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-SOURCE="https://github.com/emotiq/emotiq/releases/download/mvp-0.1.2/"
-FILE_NAME_LINUX="emotiq-20180802110735-1138e3c-linux"
-FILE_NAME_MACOS="emotiq-20180802040702-1138e3c1-macos"
+SOURCE="https://github.com/emotiq/emotiq/releases/download/mvp-0.2.0/"
+FILE_NAME_LINUX="emotiq-20180806142706-d7c805e-linux"
+FILE_NAME_MACOS="emotiq-20180806072653-d7c805e0-macos"
 
 download_node_linux()
 {
